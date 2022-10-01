@@ -19,9 +19,6 @@ website:
   search:
     copy-button: true
   google-analytics: "G-R1P14Q05G4"
-  cookie-consent:
-    type: express
-    style: simple
   open-graph: true
   twitter-card:
     creator: "@maxentlabs"
