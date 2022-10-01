@@ -18,6 +18,8 @@ website:
     collapse-below: sm
   search:
     copy-button: true
+  google-analytics: G-L1DTNG96Q4
+  open-graph: true
 format:
   html:
     theme: litera
