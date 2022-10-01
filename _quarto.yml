@@ -1,0 +1,28 @@
+project:
+  type: website
+  output-dir: docs
+website:
+  title: "blog"
+  navbar:
+    right:
+      - icon: person-badge-fill
+        href: https://maxentlabs.com
+      - icon: github
+        href: https://github.com/maxent-ai
+      - icon: twitter
+        href: https://twitter.com/maxentlabs
+      - icon: linkedin
+        href: https://www.linkedin.com/company/maxentlabs/
+    background: rgb(242, 239, 231)
+    pinned: true
+    collapse-below: sm
+  search:
+    copy-button: true
+format:
+  html:
+    theme: litera
+    css: styles.css
+    smooth-scroll: true
+
+
+

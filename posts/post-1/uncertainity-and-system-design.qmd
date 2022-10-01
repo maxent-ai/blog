@@ -1,0 +1,12 @@
+---
+title: "Rank with Multiple Objectives: A Primer"
+author: "Bharath G.S & Rita Anjana"
+date: "2022-10-14"
+categories: [ranking, recsys, recommendation-systems, optimisation]
+draft: false
+---
+# Introduction
+# Detour
+# Ranking with Multiple Objectives
+
+

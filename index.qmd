@@ -1,0 +1,14 @@
+---
+title: "Blog"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: numbered
+  sort-ui: false
+  filter-ui: false
+  fields: [image, date, title, author, categories, description]
+subtitle: On Recommendation systems, information retrieval, platforms, software architecture, ML, NLP.
+page-layout: full
+title-block-banner: rgb(242, 239, 231)
+---
