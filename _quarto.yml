@@ -18,7 +18,9 @@ website:
     collapse-below: sm
   search:
     copy-button: true
-  google-analytics: G-R1P14Q05G4
+  google-analytics: 
+   tracking-id: G-R1P14Q05G4
+   version: 4
   cookie-consent:
     type: express
     style: simple
