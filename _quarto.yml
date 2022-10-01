@@ -18,7 +18,7 @@ website:
     collapse-below: sm
   search:
     copy-button: true
-  google-analytics: G-L1DTNG96Q4
+  google-analytics: G-R1P14Q05G4
   cookie-consent:
     type: express
     style: simple
