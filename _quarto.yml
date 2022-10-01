@@ -18,14 +18,18 @@ website:
     collapse-below: sm
   search:
     copy-button: true
-  google-analytics: 
-   tracking-id: G-R1P14Q05G4
-   version: 4
+  google-analytics: "G-R1P14Q05G4"
   cookie-consent:
     type: express
     style: simple
   open-graph: true
-  twitter-card: true
+  twitter-card:
+    creator: "@maxentlabs"
+    card-style: summary_large_image
+  comments: 
+    giscus:
+      repo: maxent-ai/blog
+
 format:
   html:
     theme: litera
