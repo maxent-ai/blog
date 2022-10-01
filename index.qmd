@@ -11,4 +11,5 @@ listing:
 subtitle: On Recommendation systems, information retrieval, platforms, software architecture, ML, NLP.
 page-layout: full
 title-block-banner: rgb(242, 239, 231)
+comments: false
 ---
