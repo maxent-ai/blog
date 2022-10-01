@@ -20,6 +20,7 @@ website:
     copy-button: true
   google-analytics: G-L1DTNG96Q4
   open-graph: true
+  twitter-card: true
 format:
   html:
     theme: litera
