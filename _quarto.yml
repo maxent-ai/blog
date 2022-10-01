@@ -19,6 +19,7 @@ website:
   search:
     copy-button: true
   google-analytics: G-L1DTNG96Q4
+  site-url: https://maxentlabs.com/blog
   open-graph: true
   twitter-card: true
 format:
