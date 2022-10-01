@@ -23,9 +23,9 @@ website:
   twitter-card:
     creator: "@maxentlabs"
     card-style: summary_large_image
-  comments:
-    hypothesis: 
-      theme: clean
+  comments: 
+    giscus:
+      repo: maxent-ai/blog
 
 format:
   html:
