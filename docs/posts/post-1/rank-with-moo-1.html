@@ -207,6 +207,12 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <p>Now let’s further look into these different stakeholders, their objectives &amp; the interplay between these objectives that usually arise within this ecosystem.</p>
 <section id="stakeholders-objectives-the-objective-interplay" class="level2">
 <h2 class="anchored" data-anchor-id="stakeholders-objectives-the-objective-interplay">Stakeholders, Objectives &amp; the Objective interplay</h2>
+<p>In a multi-sided system with multiple bjectives often the objectives interact and behave in differnet manners. At a high level, you could categorise the different types of these interplay as follows:</p>
+<ul>
+<li><strong>Correlated</strong> : Optimising for one objective helps the other.</li>
+<li><strong>Neutral</strong>: Optimising for one does not impact the other</li>
+<li><strong>Anti Correlated</strong>: Optimising for one hurts the other</li>
+</ul>
 <p>Consider the example of our Hypothetical on-demand delivery startup Hyper, which is a three-sided marketplace - i.e it has three set of stakeholders with different motivations &amp; objectives.</p>
 <table class="table">
 <colgroup>
@@ -252,6 +258,28 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 </tr>
 </tbody>
 </table>
+<p>As we see above each entity has a unique set of potential objectives one could optimise the recommendation system for &amp; this has to be done in a deliberate and careful way or it might result in undesired outcomes.</p>
+<div class="callout-caution callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+🧵 Superstar economics and towards a fair marketplace
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Researchers from Microsoft &amp; Spotify found out that:</p>
+<blockquote class="blockquote">
+<p>Recommendation systems in general suffer from what is called as an inherent problem of “superstar economics”: rankings have a top and a tail end, not just for popularity, but also for relevance. In an attempt to maximize user satisfaction, recommender system optimize for relevance. This inadvertently leads to lock-in of popular and relevant suppliers, especially for users who want to minimize the effort required to interact with the system. A major side-effect of the superstar economics is the impedance to suppliers on the tail-end of the spectrum, who struggle to attract consumers, given the low exposure, and thus, are not satisfied with the marketplace. Indeed, to continue to attract more suppliers to the platform, marketplaces face an interesting problem of optimizing their models for supplier exposure, and visibility. Indeed, the suppliers (e.g.&nbsp;retailers, artists) would want a fair opportunity to be presented to the users.</p>
+</blockquote>
+<p>read more about this in <a href="http://rishabhmehrotra.com/papers/CIKM2018-marketplace-mehrotra.pdf">Towards a Fair Marketplace: Counterfactual Evaluation of the trade-off between Relevance, Fairness &amp; Satisfaction in Recommendation Systems</a></p>
+</div>
+</div>
+</div>
+<p>In short, what a system optimises for is super important &amp; in general, it needs to look for a balance while optimising for various objectives.</p>
 </section>
 </section>
 <section id="a-quick-primer-on-modern-recommendation-systems" class="level1">

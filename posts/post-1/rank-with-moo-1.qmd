@@ -46,6 +46,12 @@ Now let's further look into these different stakeholders, their objectives & the
 
 ## Stakeholders, Objectives  & the Objective interplay
 
+In a multi-sided system with multiple bjectives often the objectives interact and behave in differnet manners. At a high level, you could categorise the different types of these interplay as follows: 
+
+- **Correlated** : Optimising for one objective helps the other. 
+- **Neutral**: Optimising for one does not impact the other 
+- **Anti Correlated**: Optimising for one hurts the other 
+
 Consider the example of our Hypothetical on-demand delivery startup Hyper, which is a three-sided marketplace - i.e it has three set of stakeholders with different motivations & objectives.
 
 +---------------+--------------------------+------------------------------+
@@ -66,6 +72,20 @@ Consider the example of our Hypothetical on-demand delivery startup Hyper, which
 |               |                          |   planning                   |
 +---------------+--------------------------+------------------------------+
 
+As we see above each entity has a unique set of potential objectives one could optimise the recommendation system for & this has to be done in a deliberate and careful way or it might result in undesired outcomes.
+
+:::{.callout-caution collapse="true" appearance="minimal"}
+### 🧵 Superstar economics and towards a fair marketplace 
+
+Researchers from Microsoft & Spotify found out that: 
+
+> Recommendation systems in general suffer from what is called as an inherent problem of "superstar economics": rankings have a top and a tail end, not just for popularity, but also for relevance. In an attempt to maximize user satisfaction, recommender system optimize for relevance. This inadvertently leads to lock-in of popular and relevant suppliers, especially for users who want to minimize the effort required to interact with the system. A major side-effect of the superstar economics is the impedance to suppliers on the tail-end of the spectrum, who struggle to attract consumers, given the low exposure, and thus, are not satisfied with the marketplace. Indeed, to continue to attract more suppliers to the platform, marketplaces face an interesting problem of optimizing their models for supplier exposure, and visibility. Indeed, the suppliers (e.g. retailers, artists) would want a fair opportunity to be presented to the users.
+
+read more about this in [Towards a Fair Marketplace: Counterfactual Evaluation of the trade-off between Relevance, Fairness & Satisfaction in Recommendation Systems](http://rishabhmehrotra.com/papers/CIKM2018-marketplace-mehrotra.pdf)
+
+:::
+
+In short, what a system optimises for is super important & in general, it needs to look for a balance while optimising for various objectives. 
 
 # A Quick Primer on modern recommendation systems
 
