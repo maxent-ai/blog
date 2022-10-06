@@ -1,6 +1,8 @@
 [
   {
     "listing": "/index.html",
-    "items": []
+    "items": [
+      "/posts/post-1/rank-with-moo-1.html"
+    ]
   }
 ]
