@@ -9,7 +9,7 @@
 <meta name="author" content="Bharath G.S &amp; Rita Anjana">
 <meta name="dcterms.date" content="2022-10-14">
 
-<title>blog - Rank with Multiple Objectives: A Primer</title>
+<title>maxent.blog - Rank, Rank &amp; Rank: A Primer</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -72,9 +72,11 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="blog - Rank with Multiple Objectives: A Primer">
-<meta property="og:site-name" content="blog">
-<meta name="twitter:title" content="blog - Rank with Multiple Objectives: A Primer">
+<meta property="og:title" content="maxent.blog - Rank, Rank &amp; Rank: A Primer">
+<meta property="og:description" content="Part I - An Overview of Multiple Objective Optimisation for Ranking.">
+<meta property="og:site-name" content="maxent.blog">
+<meta name="twitter:title" content="maxent.blog - Rank, Rank &amp; Rank: A Primer">
+<meta name="twitter:description" content="Part I - An Overview of Multiple Objective Optimisation for Ranking.">
 <meta name="twitter:creator" content="@maxentlabs">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -86,7 +88,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
     <nav class="navbar navbar-expand-sm navbar-dark ">
       <div class="navbar-container container-fluid">
       <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">blog</span>
+    <span class="navbar-title">maxent.blog</span>
   </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -123,12 +125,15 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Rank with Multiple Objectives: A Primer</h1>
+      <h1 class="title">Rank, Rank &amp; Rank: A Primer</h1>
+            <p class="subtitle lead">Part I - An Overview of Multiple Objective Optimisation for Ranking.</p>
                                 <div class="quarto-categories">
-                <div class="quarto-category">ranking</div>
+                <div class="quarto-category">ltr</div>
                 <div class="quarto-category">recsys</div>
-                <div class="quarto-category">recommendation-systems</div>
                 <div class="quarto-category">optimisation</div>
+                <div class="quarto-category">applied-ml</div>
+                <div class="quarto-category">marketplace</div>
+                <div class="quarto-category">economics</div>
               </div>
                   </div>
   </div>
@@ -163,17 +168,109 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 
 
 
+<p><img src="assets/intro.png" class="img-fluid"></p>
+<section id="the-backdrop" class="level1">
+<h1>The Backdrop</h1>
+<p>It took humans less than a decade to reach a level of sophistication to reach a stage where with less than a couple of keystrokes on a phone one could get the most elaborate meal delivered at home. That’s the magic of the internet revolution. In recent times this trend has only gotten sharper and sharper, with the on-demand delivery space heating up, an Indian consumer can receive anything from an egg to the most lavish dinner faster than it takes to respond to a slack message, in fact as of 2022 - you can get most things delivered under 10 minutes!</p>
+<p>The implication of this is that the customers do not need to plan anything much in advance and that the time between desire, action, and gratification has shrunk to almost zero. One such Hypothetical unicorn startup in this space is Hyper - Which started just over two years ago and has seen massive growth in a short period.</p>
+<p>Hyper is known mainly for its super fast, sub-10-minute delivery of almost anything that one can think of! However, In the past couple of weeks, the sentiment trends around sub-10-minute style deliveries seem to be sharply negative due to various factors especially concerned around the lack of empathy towards Hyper’s delivery partners. What was once a strength seems to be turning into pain for the company and many are asking if we have gone too far.</p>
+<p>Within this Hypothetical backdrop where Hyper is reevaluating its business strategy, Hyper’s engineering team set’s forth on a journey to contribute towards its initiative of bringing a bit more balance within the marketplace. This marketplace is not overly user-centric but also is fair for other stakeholders like a delivery partners as well.</p>
+<p>Enter recommendation systems, systems that sit at the heart of how most digital marketplaces perform. Most of the digital economies are shaped by these systems - the scale, convenience, and speed of marketplaces like Hyper are enabled by recommendation systems and search engines. Hence, what these systems optimize for and how they behave are of critical importance. Within a marketplace, there are a lot of factors that come into play, and the success of any given marketplace is closely tied to how you match, cater &amp; satisfy the requirements of all the stakeholders like the consumers, suppliers, and more.</p>
+<p>In a series of articles, let’s dive deeper into how these systems are designed, and optimized and explore their inner workings and also learn how these systems (or parts of them, to be precise) can be built in practice.</p>
+<p>But first, let’s establish a couple of definitions, terms &amp; concepts.</p>
+<div class="callout-caution callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+🧵 Marketplace, marketplace differentiators &amp; superstar economics
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Marketplace</strong>: An intermediary that helps facilitate economic interaction between two or more sets of agents, these have existed since time immemorial as local markets to shopping malls to modern digital experiences like amazon, Flipkart, Swiggy, Instacart, etc - in fact, they are pretty much everywhere.</li>
+<li><strong>Differentiating factors of a marketplace</strong>: Marketplaces come in various shapes and sizes, but at a high level they can be differentiated based on Need/Customer coverage (horizontal vs vertical), Participant type (b2b vs b2c), Type of offering (service, goods, information, etc). They can also be differentiated based on control and functionality styles (open, closed, focused, censored, etc), management approach (unmanaged, lite, or fully managed) &amp; lastly their transaction regularity (one-off &amp; repeat transactions).</li>
+<li><strong>Superstar economics</strong>: The Phenomenon of superstars, wherein a relatively small number of people earn enormous amounts of money or value of some form and dominate the activities in which they engage.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
+<p>At the core of any recommendation system, there would be something like a collaborative filtering model (matrix factorization or tensor factorization), latent variable model, neural embeddings-based model, or Neural Collaborative filtering models, and these systems would come in one of these variants - Short vs Long term recommendations, cold start &amp; cohort-based, Multi view and multi-interest models or multi-task recommendations. The most common trend in all these systems usually would be that they all are focused on delivering single user-centric recommendations. These systems were designed to address concerns around user needs, behavior, interests, interactions &amp; personalization. Further, they are measured on user engagement-oriented metrics.</p>
+<p>But, caring only about a single user type, might not yield the most optimal outcome especially when there are many stakeholders involved within a platform - aka recommendation systems within a marketplace-type setting could not be designed with a single entity in mind. This is where the need for a recommendation system that caters to different stakeholders with different sets of interests arises.</p>
+<p>Hence, Recommendations in marketplaces are multi-sided. Equipped to cater not just to a single user’s (aka buyer) needs, but also the supplier’s needs &amp; most often they also have to consider platform economics within the play. Such a system is usually designed with many objectives in mind - some of these objectives are User expectations, user understanding, supplier exposure, supplier goals, platform objectives, and long-term value.</p>
+<p>Now let’s further look into these different stakeholders, their objectives &amp; the interplay between these objectives that usually arise within this ecosystem.</p>
+<section id="stakeholders-objectives-the-objective-interplay" class="level2">
+<h2 class="anchored" data-anchor-id="stakeholders-objectives-the-objective-interplay">Stakeholders, Objectives &amp; the Objective interplay</h2>
+<p>Consider the example of our Hypothetical on-demand delivery startup Hyper, which is a three-sided marketplace - i.e it has three set of stakeholders with different motivations &amp; objectives.</p>
+<table class="table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 36%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stakeholder</th>
+<th>Needs/Motivations</th>
+<th>Potential Objectives</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>End User</td>
+<td>Wants to order something from local partner shops.</td>
+<td><ul>
+<li>Quick delivery</li>
+<li>Best price</li>
+<li>Reliable merchants</li>
+<li>Fresh items</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td>Merchants</td>
+<td>Provide online visibility and find customers.</td>
+<td><ul>
+<li>Matching quality</li>
+<li>Exposure</li>
+<li>Minimise wastage</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td>Delivery Partners</td>
+<td>Earn a stable livelihood.</td>
+<td><ul>
+<li>Regularity in jobs</li>
+<li>Earnings per partner</li>
+<li>Efficient drop location planning</li>
+</ul></td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="detour" class="level1">
-<h1>Detour</h1>
 </section>
-<section id="ranking-with-multiple-objectives" class="level1">
-<h1>Ranking with Multiple Objectives</h1>
+<section id="a-quick-primer-on-modern-recommendation-systems" class="level1">
+<h1>A Quick Primer on modern recommendation systems</h1>
+</section>
+<section id="a-quick-primer-on-learning-to-rank" class="level1">
+<h1>A Quick Primer on Learning to Rank</h1>
+</section>
+<section id="learning-to-rank-with-multiple-objectives" class="level1">
+<h1>Learning to rank with Multiple Objectives</h1>
+</section>
+<section id="where-to-go-from-here" class="level1">
+<h1>Where to go from here?</h1>
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix</h1>
 
 
 </section>

@@ -2,7 +2,7 @@ project:
   type: website
   output-dir: docs
 website:
-  title: "blog"
+  title: "maxent.blog"
   navbar:
     right:
       - icon: person-badge-fill
