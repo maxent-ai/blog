@@ -87,6 +87,8 @@ read more about this in [Towards a Fair Marketplace: Counterfactual Evaluation o
 
 In short, what a system optimises for is super important & in general, it needs to look for a balance while optimising for various objectives. 
 
+Before we proceed further on the track of optimising for multiple objectives (or multiple objective optimisation) - let us quickly visit how most modern recommendation systems look like & also do a quick recap of how one builds a model for ranking (aka Learning to rank) & some key metrics used for measuring these systems.
+
 # A Quick Primer on modern recommendation systems
 
 # A Quick Primer on Learning to Rank 
