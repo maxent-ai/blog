@@ -7,9 +7,9 @@ categories: [ltr, recsys, optimisation, applied-ml, marketplace, economics]
 draft: false
 ---
 
-# The Backdrop
-
 ![](assets/intro.png)
+
+# The Backdrop
 
 It took humans less than a decade to reach a level of sophistication to reach a stage where with less than a couple of keystrokes on a phone one could get the most elaborate meal delivered at home. That’s the magic of the internet revolution. In recent times this trend has only gotten sharper and sharper, with the on-demand delivery space heating up, an Indian consumer can receive anything from an egg to the most lavish dinner faster than it takes to respond to a slack message, in fact as of 2022 - you can get most things delivered under 10 minutes! 
 
