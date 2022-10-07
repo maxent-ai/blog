@@ -89,9 +89,62 @@ In short, what a system optimises for is super important & in general, it needs 
 
 Before we proceed further on the track of optimising for multiple objectives (or multiple objective optimisation) - let us quickly visit how most modern recommendation systems look like & also do a quick recap of how one builds a model for ranking (aka Learning to rank) & some key metrics used for measuring these systems.
 
-# A Quick Primer on modern recommendation systems
+# A Quick Primer on modern recsys
+
+![](assets/recsys-wn.png)
 
 # A Quick Primer on Learning to Rank 
+
+Learning to rank (LTR) refers to a class of ML techniques for training a model to solve the task of ranking a set of items. Usually this is formulated as a supervised or sometimes semi-supervised task.
+
+Generally, this means we try to learn a function $f(q, D)$ given a query $q$ & a list of documents $D$ to predict the order/rank of the documents within this list. Depending on how the loss function is formulated in the underlying task, any LTR algorithm can be classified into 3 distinct categories: 
+
+1. Pointwise method
+2. Pairwise method
+3. Listwise method
+
+## Ranking Task
+
+Given a query $q$, and a set of $n$ documents $D=d1,d2,...,dn$, we'd like to learn a function $f$ such that $f(q, D)$ will predict the relevance of any given document associated with a query.
+
+## Pointwise method
+
+In pointwise method, the above ranking task is re-formulated as a standard classification/regression task. The function to be learned $f(q, D)$ is simplified as $f(q, d_i)$ i.e the relevance of each document given a query is scored independently.
+
+For instance, if we have two queries associated with 2 and 3 resulting matched documents:
+
+1. $q_1 \to d_1, d_2$
+2. $q_2 \to d_3, d_4, d_5$
+
+Then the training data $x_i$ in a pointwise method will  essentially be every query-document pair as follows: 
+
+1. $x_1 : q_1, d_1$
+2. $x_2 : q_1, d_2$
+3. $x_3 : q_2, d_3$
+4. $x_4 : q_2, d_4$
+5. $x_5 : q_2, d_5$
+
+Since each document is scored independently with the absolute relevance as the target label, the task is no different from any standard classification or regression task. As such any standard ml algorithms can be levergaed in this setting.
+
+- Advantage: Simplicity, Any standard ML models can be redily applied
+- Disadvantage: The results can be often sub-optimal due to not utilizing the full information of the entire list of matching documents for each query & This requires explicit labels while constructing the dataset, and can be quite expensive. 
+
+## Pairwise method
+
+In pairwise method, the goal is to learn a pointwise scoring function $f(q, d_i)$ similar to a pointwise formulation. However, the key difference arises in how the training data is consructed - where we take pairs of documents within the same query as training samples. 
+
+1. $x_1 \to q_1, (d_1, d_2)$
+2. $x_2 \to q_1, (d_3, d_4)$
+3. $x_3 \to q_1, (d_3, d_5)$
+4. $x_4 \to q_1, (d_4, d_5)$
+
+In this setting, a new set of pairwise binary labels are derived, by comapring the individual relevance score in each pair. 
+For example, given the first query $q_1$
+
+
+- Advantage: We don't need explicit labels, Only pairwise preferences are required. This is an advantage because sometimes we are only able to infer the pairwise preference from collected user behavior & the model learns how to rank directly, even though its a pairwise setting, but in theory it can approximate the performance of a general ranking task. 
+- Disadvantage: The Core Scoring mechanism is still pointwise. Hence, that relative information in the feature space among different documents given the same query is still not fully leveraged.
+
 
 # Learning to rank with Multiple Objectives 
 

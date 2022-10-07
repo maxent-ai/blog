@@ -70,6 +70,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
     }
     </style>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="maxent.blog - Rank, Rank &amp; Rank: A Primer">
@@ -283,11 +284,60 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <p>Before we proceed further on the track of optimising for multiple objectives (or multiple objective optimisation) - let us quickly visit how most modern recommendation systems look like &amp; also do a quick recap of how one builds a model for ranking (aka Learning to rank) &amp; some key metrics used for measuring these systems.</p>
 </section>
 </section>
-<section id="a-quick-primer-on-modern-recommendation-systems" class="level1">
-<h1>A Quick Primer on modern recommendation systems</h1>
+<section id="a-quick-primer-on-modern-recsys" class="level1">
+<h1>A Quick Primer on modern recsys</h1>
+<p><img src="assets/recsys-wn.png" class="img-fluid"></p>
 </section>
 <section id="a-quick-primer-on-learning-to-rank" class="level1">
 <h1>A Quick Primer on Learning to Rank</h1>
+<p>Learning to rank (LTR) refers to a class of ML techniques for training a model to solve the task of ranking a set of items. Usually this is formulated as a supervised or sometimes semi-supervised task.</p>
+<p>Generally, this means we try to learn a function <span class="math inline">\(f(q, D)\)</span> given a query <span class="math inline">\(q\)</span> &amp; a list of documents <span class="math inline">\(D\)</span> to predict the order/rank of the documents within this list. Depending on how the loss function is formulated in the underlying task, any LTR algorithm can be classified into 3 distinct categories:</p>
+<ol type="1">
+<li>Pointwise method</li>
+<li>Pairwise method</li>
+<li>Listwise method</li>
+</ol>
+<section id="ranking-task" class="level2">
+<h2 class="anchored" data-anchor-id="ranking-task">Ranking Task</h2>
+<p>Given a query <span class="math inline">\(q\)</span>, and a set of <span class="math inline">\(n\)</span> documents <span class="math inline">\(D=d1,d2,...,dn\)</span>, we’d like to learn a function <span class="math inline">\(f\)</span> such that <span class="math inline">\(f(q, D)\)</span> will predict the relevance of any given document associated with a query.</p>
+</section>
+<section id="pointwise-method" class="level2">
+<h2 class="anchored" data-anchor-id="pointwise-method">Pointwise method</h2>
+<p>In pointwise method, the above ranking task is re-formulated as a standard classification/regression task. The function to be learned <span class="math inline">\(f(q, D)\)</span> is simplified as <span class="math inline">\(f(q, d_i)\)</span> i.e the relevance of each document given a query is scored independently.</p>
+<p>For instance, if we have two queries associated with 2 and 3 resulting matched documents:</p>
+<ol type="1">
+<li><span class="math inline">\(q_1 \to d_1, d_2\)</span></li>
+<li><span class="math inline">\(q_2 \to d_3, d_4, d_5\)</span></li>
+</ol>
+<p>Then the training data <span class="math inline">\(x_i\)</span> in a pointwise method will essentially be every query-document pair as follows:</p>
+<ol type="1">
+<li><span class="math inline">\(x_1 : q_1, d_1\)</span></li>
+<li><span class="math inline">\(x_2 : q_1, d_2\)</span></li>
+<li><span class="math inline">\(x_3 : q_2, d_3\)</span></li>
+<li><span class="math inline">\(x_4 : q_2, d_4\)</span></li>
+<li><span class="math inline">\(x_5 : q_2, d_5\)</span></li>
+</ol>
+<p>Since each document is scored independently with the absolute relevance as the target label, the task is no different from any standard classification or regression task. As such any standard ml algorithms can be levergaed in this setting.</p>
+<ul>
+<li>Advantage: Simplicity, Any standard ML models can be redily applied</li>
+<li>Disadvantage: The results can be often sub-optimal due to not utilizing the full information of the entire list of matching documents for each query &amp; This requires explicit labels while constructing the dataset, and can be quite expensive.</li>
+</ul>
+</section>
+<section id="pairwise-method" class="level2">
+<h2 class="anchored" data-anchor-id="pairwise-method">Pairwise method</h2>
+<p>In pairwise method, the goal is to learn a pointwise scoring function <span class="math inline">\(f(q, d_i)\)</span> similar to a pointwise formulation. However, the key difference arises in how the training data is consructed - where we take pairs of documents within the same query as training samples.</p>
+<ol type="1">
+<li><span class="math inline">\(x_1 \to q_1, (d_1, d_2)\)</span></li>
+<li><span class="math inline">\(x_2 \to q_1, (d_3, d_4)\)</span></li>
+<li><span class="math inline">\(x_3 \to q_1, (d_3, d_5)\)</span></li>
+<li><span class="math inline">\(x_4 \to q_1, (d_4, d_5)\)</span></li>
+</ol>
+<p>In this setting, a new set of pairwise binary labels are derived, by comapring the individual relevance score in each pair. For example, given the first query <span class="math inline">\(q_1\)</span></p>
+<ul>
+<li>Advantage: We don’t need explicit labels, Only pairwise preferences are required. This is an advantage because sometimes we are only able to infer the pairwise preference from collected user behavior &amp; the model learns how to rank directly, even though its a pairwise setting, but in theory it can approximate the performance of a general ranking task.</li>
+<li>Disadvantage: The Core Scoring mechanism is still pointwise. Hence, that relative information in the feature space among different documents given the same query is still not fully leveraged.</li>
+</ul>
+</section>
 </section>
 <section id="learning-to-rank-with-multiple-objectives" class="level1">
 <h1>Learning to rank with Multiple Objectives</h1>
