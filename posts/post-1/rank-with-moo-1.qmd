@@ -235,9 +235,11 @@ Here is a simple example for computing MAP:
 
 ## Mean Reciprocal Rank (MRR) & Expected Reciprocal Rank (ERR)
 
-
+![](assets/mrr.jpeg)
 
 ## Normalized Discounted Cumulative Gain (NDCG)
+
+![](assets/ndcg.jpeg)
 
 # Learning to rank with Multiple Objectives 
 
