@@ -74,10 +74,10 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="maxent.blog - Rank, Rank &amp; Rank: A Primer">
-<meta property="og:description" content="Part I - An Overview of Multiple Objective Optimisation for Ranking.">
+<meta property="og:description" content="Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics &amp; Multiple Objective Optimisation for Ranking.">
 <meta property="og:site-name" content="maxent.blog">
 <meta name="twitter:title" content="maxent.blog - Rank, Rank &amp; Rank: A Primer">
-<meta name="twitter:description" content="Part I - An Overview of Multiple Objective Optimisation for Ranking.">
+<meta name="twitter:description" content="Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics &amp; Multiple Objective Optimisation for Ranking.">
 <meta name="twitter:creator" content="@maxentlabs">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -127,7 +127,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Rank, Rank &amp; Rank: A Primer</h1>
-            <p class="subtitle lead">Part I - An Overview of Multiple Objective Optimisation for Ranking.</p>
+            <p class="subtitle lead">Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics &amp; Multiple Objective Optimisation for Ranking.</p>
                                 <div class="quarto-categories">
                 <div class="quarto-category">ltr</div>
                 <div class="quarto-category">recsys</div>
@@ -284,12 +284,12 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <p>Before we proceed further on the track of optimising for multiple objectives (or multiple objective optimisation) - let us quickly visit how most modern recommendation systems look like &amp; also do a quick recap of how one builds a model for ranking (aka Learning to rank) &amp; some key metrics used for measuring these systems.</p>
 </section>
 </section>
-<section id="a-quick-primer-on-modern-recsys" class="level1">
-<h1>A Quick Primer on modern recsys</h1>
+<section id="a-quick-recap-on-modern-recsys" class="level1">
+<h1>A Quick Recap on modern recsys</h1>
 <p><img src="assets/recsys-wn.png" class="img-fluid"></p>
 </section>
-<section id="a-quick-primer-on-learning-to-rank" class="level1">
-<h1>A Quick Primer on Learning to Rank</h1>
+<section id="a-quick-recap-on-learning-to-rank" class="level1">
+<h1>A Quick Recap on Learning to Rank</h1>
 <p>Learning to rank (LTR) refers to a class of ML techniques for training a model to solve the task of ranking a set of items. Usually this is formulated as a supervised or sometimes semi-supervised task.</p>
 <p>Generally, this means we try to learn a function <span class="math inline">\(f(q, D)\)</span> given a query <span class="math inline">\(q\)</span> &amp; a list of documents <span class="math inline">\(D\)</span> to predict the order/rank of the documents within this list. Depending on how the loss function is formulated in the underlying task, any LTR algorithm can be classified into 3 distinct categories:</p>
 <ol type="1">
@@ -402,14 +402,74 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 </table>
 </section>
 </section>
+<section id="a-quick-recap-on-ranking-evaluation-metrics" class="level1">
+<h1>A Quick Recap on Ranking Evaluation metrics</h1>
+<p>Over the years, there have been several metrics which have been proposed and widely used for evaluating a ranking model. If we were to summarise them and list the most popular ones it boils down to this:</p>
+<table class="table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 63%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric Type</th>
+<th>Metric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Binary Relevance</td>
+<td>Mean Average Precision (MAP)</td>
+</tr>
+<tr class="even">
+<td>Binary Relevance</td>
+<td>Mean Reciprocal Rank (MRR)</td>
+</tr>
+<tr class="odd">
+<td>Graded Relevance</td>
+<td>Normalized Discounted Cumulative Gain (NDCG)</td>
+</tr>
+<tr class="even">
+<td>Graded Relevance</td>
+<td>Expected Reciprocal Rank (ERR)</td>
+</tr>
+</tbody>
+</table>
+<p>In general, binary metrics only consider relevant v.s. irrelevant, while graded metrics also consider the ranking among relevant items. The degree of relevancy matters in this case when scoring a list of items.</p>
+<section id="mean-average-precision-map" class="level2">
+<h2 class="anchored" data-anchor-id="mean-average-precision-map">Mean Average Precision (MAP)</h2>
+<p>MAP is a measure based on binary label of relevancy. To compute this first we define precision at k for a given query <span class="math inline">\(P@k(q)\)</span> as:</p>
+<p><span class="math display">\[\begin{eqnarray} P@k(q) \equiv \frac{\sum_{i=1}^k r_i}{k} \end{eqnarray}\]</span></p>
+<p>for an ordered list of prediction <span class="math inline">\(r_i\)</span> for all <span class="math inline">\(k\)</span> items. <span class="math inline">\(ri=1\)</span> if it is relevant and 0 otherwise.Then we define the average precision given a query <span class="math inline">\(AP(q)\)</span> at <span class="math inline">\(k\)</span> items as:</p>
+<p><span class="math display">\[\begin{eqnarray} AP(q)@k \equiv \frac{1}{\sum_{i=1}^k r_i} \sum_{i=1}^k P@i(q) \times r_i \end{eqnarray}\]</span></p>
+<p>Mean Average Precision is just the mean of <span class="math inline">\(AP(q)\)</span> for all queries:</p>
+<p><span class="math display">\[MAP \equiv \frac{\sum_{q=1}^Q AP(q)}{Q}\]</span></p>
+<p>Also, MAP is an order sensitive metric because of the term <span class="math inline">\(r_i\)</span> in the calculation of AP. It is essentially taking the average of precision at each ranking position and penalizing the precision at positions with irrelevant item by strcitly setting them to zeroes.</p>
+<p>Here is a simple example for computing MAP:</p>
+<p><img src="assets/map.jpeg" class="img-fluid"></p>
+</section>
+<section id="mean-reciprocal-rank-mrr-expected-reciprocal-rank-err" class="level2">
+<h2 class="anchored" data-anchor-id="mean-reciprocal-rank-mrr-expected-reciprocal-rank-err">Mean Reciprocal Rank (MRR) &amp; Expected Reciprocal Rank (ERR)</h2>
+</section>
+<section id="normalized-discounted-cumulative-gain-ndcg" class="level2">
+<h2 class="anchored" data-anchor-id="normalized-discounted-cumulative-gain-ndcg">Normalized Discounted Cumulative Gain (NDCG)</h2>
+</section>
+</section>
 <section id="learning-to-rank-with-multiple-objectives" class="level1">
 <h1>Learning to rank with Multiple Objectives</h1>
 </section>
-<section id="where-to-go-from-here" class="level1">
-<h1>Where to go from here?</h1>
-</section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
+<div class="callout-note callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong><em>Next in Series - MOO Ranking via Scalarisation - The Fine Print</em></strong>, In which we will do a deep dive of various approaches to scalarisation and a survey on how it’s done in the industry, with a reference example implementation &amp; system design.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="appendix" class="level1">
 <h1>Appendix</h1>
@@ -514,8 +574,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
-</script>
-<script src="https://giscus.app/client.js" data-repo="maxent-ai/blog" data-repo-id="R_kgDOIGulzA" data-category="General" data-category-id="DIC_kwDOIGulzM4CRu5r" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 

@@ -1,10 +1,11 @@
 ---
 title: "Rank, Rank & Rank: A Primer"
-subtitle: "Part I - An Overview of Multiple Objective Optimisation for Ranking."
+subtitle: "Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics & Multiple Objective Optimisation for Ranking."
 author: "Bharath G.S & Rita Anjana"
 date: "2022-10-14"
 categories: [ltr, recsys, optimisation, applied-ml, marketplace, economics]
 draft: false
+comments: false
 ---
 
 ![](assets/intro.png)
@@ -89,11 +90,11 @@ In short, what a system optimises for is super important & in general, it needs 
 
 Before we proceed further on the track of optimising for multiple objectives (or multiple objective optimisation) - let us quickly visit how most modern recommendation systems look like & also do a quick recap of how one builds a model for ranking (aka Learning to rank) & some key metrics used for measuring these systems.
 
-# A Quick Primer on modern recsys
+# A Quick Recap on modern recsys
 
 ![](assets/recsys-wn.png)
 
-# A Quick Primer on Learning to Rank 
+# A Quick Recap on Learning to Rank 
 
 Learning to rank (LTR) refers to a class of ML techniques for training a model to solve the task of ranking a set of items. Usually this is formulated as a supervised or sometimes semi-supervised task.
 
@@ -197,12 +198,55 @@ With that brief introduction out of the way, let's also quickly look at the adva
 |         |                                          | which could be sub-optimal.                       | 
 +---------+------------------------------------------+---------------------------------------------------+
 
+# A Quick Recap on Ranking Evaluation metrics
 
+Over the years, there have been several metrics which have been proposed and widely used for evaluating a ranking model. If we were to summarise them and list the most popular ones it boils down to this: 
+
++-------------------+---------------------------------------------+
+| Metric Type       | Metric                                      |
++===================+=============================================+
+| Binary Relevance  | Mean Average Precision (MAP)                |
++-------------------+---------------------------------------------+
+| Binary Relevance  | Mean Reciprocal Rank (MRR)                  |
++-------------------+---------------------------------------------+
+| Graded Relevance  | Normalized Discounted Cumulative Gain (NDCG)|
++-------------------+---------------------------------------------+
+| Graded Relevance  | Expected Reciprocal Rank (ERR)              |
++-------------------+---------------------------------------------+
+
+In general, binary metrics only consider relevant v.s. irrelevant, while graded metrics  also consider the ranking among relevant items. The degree of relevancy matters in this case when scoring a list of items.
+
+## Mean Average Precision (MAP)
+
+MAP is a measure based on binary label of relevancy. To compute this first we define precision at k for a given query $P@k(q)$ as:
+$$\begin{eqnarray} P@k(q) \equiv \frac{\sum_{i=1}^k r_i}{k} \end{eqnarray}$$
+for an ordered list of prediction $r_i$ for all $k$ items. $ri=1$ if it is relevant and 0 otherwise.Then we define the average precision given a query $AP(q)$ at $k$ items as: 
+$$\begin{eqnarray} AP(q)@k \equiv \frac{1}{\sum_{i=1}^k r_i} \sum_{i=1}^k P@i(q) \times r_i \end{eqnarray}$$
+
+Mean Average Precision is just the mean of $AP(q)$ for all queries:
+
+$$MAP \equiv \frac{\sum_{q=1}^Q AP(q)}{Q}$$
+
+Also, MAP is an order sensitive metric because of the term $r_i$ in the calculation of AP. It is essentially taking the average of precision at each ranking position and penalizing the precision at positions with irrelevant item by strcitly setting them to zeroes.
+
+Here is a simple example for computing MAP: 
+
+![](assets/map.jpeg)
+
+## Mean Reciprocal Rank (MRR) & Expected Reciprocal Rank (ERR)
+
+
+
+## Normalized Discounted Cumulative Gain (NDCG)
 
 # Learning to rank with Multiple Objectives 
 
-# Where to go from here?
-
 # Conclusion
+
+:::{.callout-note appearance="minimal"}
+
+__*Next in Series - MOO Ranking via Scalarisation - The Fine Print*__, In which we will do a deep dive of various approaches to scalarisation and a survey on how it's done in the industry, with a reference example implementation & system design.
+
+:::
 
 # Appendix
