@@ -318,10 +318,6 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <li><span class="math inline">\(x_5 : q_2, d_5\)</span></li>
 </ol>
 <p>Since each document is scored independently with the absolute relevance as the target label, the task is no different from any standard classification or regression task. As such any standard ml algorithms can be levergaed in this setting.</p>
-<ul>
-<li>Advantage: Simplicity, Any standard ML models can be redily applied</li>
-<li>Disadvantage: The results can be often sub-optimal due to not utilizing the full information of the entire list of matching documents for each query &amp; This requires explicit labels while constructing the dataset, and can be quite expensive.</li>
-</ul>
 </section>
 <section id="pairwise-method" class="level2">
 <h2 class="anchored" data-anchor-id="pairwise-method">Pairwise method</h2>
@@ -332,11 +328,78 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <li><span class="math inline">\(x_3 \to q_1, (d_3, d_5)\)</span></li>
 <li><span class="math inline">\(x_4 \to q_1, (d_4, d_5)\)</span></li>
 </ol>
-<p>In this setting, a new set of pairwise binary labels are derived, by comapring the individual relevance score in each pair. For example, given the first query <span class="math inline">\(q_1\)</span></p>
+<p>In this setting, a new set of pairwise binary labels are derived, by comapring the individual relevance score in each pair. For example, given the first query <span class="math inline">\(q_1\)</span>, if <span class="math inline">\(y_1==\)</span> (i.e.. an irrelevant document) for <span class="math inline">\(d_1\)</span> &amp; <span class="math inline">\(y_2=3\)</span> (i.e.. a Highly relevant document) for <span class="math inline">\(d_2\)</span> then we can create a new label <span class="math inline">\(y_1&lt;y_2\)</span> for the pair of docs <span class="math inline">\((d_1, d_2)\)</span> - by doing so we have essentially converted this back to a binary classification task again.</p>
+<p>Now in order to learn the function <span class="math inline">\(f(q, d_i)\)</span> which is still pointwise, but in a pairwise manner, we model the difference in scores probablistically as follows:</p>
+<p><span class="math display">\[\begin{eqnarray} P(i&gt;j) \equiv \frac{1}{1+exp^{-(s_i - s_j)}}\end{eqnarray}\]</span></p>
+<p>i.e, if document <span class="math inline">\(i\)</span> is better matched than document <span class="math inline">\(j\)</span> (denoted as <span class="math inline">\(i&gt;j\)</span>), then the probability of the scoring function to have scored <span class="math inline">\(f(q, d_i) = S_i\)</span> should be close to 1. In other words, the model is trying to learn, given a query, how to score a pair of documents such that a more relevant document would be scored higher.</p>
+</section>
+<section id="listwise-method" class="level2">
+<h2 class="anchored" data-anchor-id="listwise-method">Listwise method</h2>
+<p>Listwise methods, solve the problem of ranking by learning to score the entire list jointly and they do so via two main sub techniques:</p>
 <ul>
-<li>Advantage: We don’t need explicit labels, Only pairwise preferences are required. This is an advantage because sometimes we are only able to infer the pairwise preference from collected user behavior &amp; the model learns how to rank directly, even though its a pairwise setting, but in theory it can approximate the performance of a general ranking task.</li>
-<li>Disadvantage: The Core Scoring mechanism is still pointwise. Hence, that relative information in the feature space among different documents given the same query is still not fully leveraged.</li>
+<li>Direct optimization of IR measures such as NDCG.(Eg: SoftRank, AdaRank).</li>
+<li>Minimize a loss function that is defined based on understanding the unique properties of the kind of ranking you are trying to achieve. (E.g. ListNet, ListMLE).</li>
 </ul>
+<p>Let’s do a quick review of one of these approaches:</p>
+<p>Consider ListNet, Which is based on the concept of permutation probability of a list of items. In this case we assume there is a pointwise scoring function <span class="math inline">\(f(q,di)\)</span> used to score and rank a given list of items. But instead of modeling the probability as a pairwise comparison using scoring difference, we model the probability of the entire list of results. In this setting our documents and query dataset would appear like this:</p>
+<ol type="1">
+<li><span class="math inline">\(x_1 : q_1, (d_1, d_2)\)</span></li>
+<li><span class="math inline">\(x_2 : q_2, (d_3, d_4, d_5)\)</span></li>
+</ol>
+<p>First let’s look at the Permutation probability. Let’s denote <span class="math inline">\(π\)</span> as a specific permutation of a given list of length <span class="math inline">\(n\)</span>, <span class="math inline">\(\Theta (s_i) = f(q, d_i)\)</span> as any increasing function of scoring <span class="math inline">\(s_i\)</span> given a query <span class="math inline">\(q\)</span> and a document <span class="math inline">\(i\)</span>. The probability of having a permutation <span class="math inline">\(π\)</span> can be written as follows:</p>
+<p><span class="math display">\[\begin{eqnarray} P(\pi) = \prod_{i=1}^n \frac{\phi(s_i)}{\sum_{k=i}^n\phi(s_k)} \end{eqnarray}\]</span></p>
+<p>To illustrate consider a list of 3 items, then the probability of returning the permutation <span class="math inline">\(s_1\)</span>,<span class="math inline">\(s_2\)</span>,<span class="math inline">\(s_3\)</span> is calculated as follows:</p>
+<p><span class="math display">\[\begin{eqnarray} P(\pi = \{s_1, s_2, s_3\}) = \frac{\phi(s_1)}{\phi(s_1) + \phi(s_2) + \phi(s_3)} \cdot \frac{\phi(s_2)}{\phi(s_2) + \phi(s_3)} \cdot \frac{\phi(s_3)}{\phi(s_3)} \end{eqnarray}\]</span></p>
+<p>Due to computational complexity, ListNet simplies the problem by looking at only the top-one probability of a given item. The top-one probability of object i equals the sum of the permutation probabilities of permutations in which object i is ranked on the top. Indeed, the top-one probability of object i can be written as:</p>
+<p><span class="math display">\[\begin{eqnarray} P(i) = \frac{\phi(s_i)}{\sum_{k=1}^n \phi(s_k)} \end{eqnarray}\]</span></p>
+<p>Given any two list of items represented by top-one probabilities, we can now measure the difference between them using cross entropy. Then we can use an ml algorithm which minimises that cross entropy. The choice of function <span class="math inline">\(ϕ(⋅)\)</span>, can be as simple as just an exponential function. When <span class="math inline">\(ϕ(⋅)\)</span> is expotential and the list length is two, the solution basically reduces to a pairwise method as described earlier.</p>
+<p>With that brief introduction out of the way, let’s also quickly look at the advantages and disadvantages of each of these approaches:</p>
+<table class="table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 47%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Advantages</th>
+<th>Disadvantages</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pointwise</td>
+<td><ul>
+<li>Simplicity, Any standard ML models can be applied without any changes.</li>
+</ul></td>
+<td><ul>
+<li>The results can be often sub-optimal due to not utilizing the full information of the entire list of matching documents for each query.</li>
+<li>This requires explicit labels while constructing the dataset, and can be quite expensive.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td>Pairwise</td>
+<td><ul>
+<li>We don’t need explicit labels, Only pairwise preferences are required.</li>
+<li>The model learns how to rank directly, even though its a pairwise setting, but in theory it can approximate the performance of a general ranking task.</li>
+</ul></td>
+<td><ul>
+<li>The Core Scoring mechanism is still pointwise. Hence, that relative information in the feature space among different documents given the same query is still not fully leveraged.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td>Listwise</td>
+<td><ul>
+<li>Theoretically this is a good solution for a ranking task.</li>
+</ul></td>
+<td><ul>
+<li>Costly to compute in its theoretical form and hence several approximations are used in practice.</li>
+<li>Scoring function is still pointwise, which could be sub-optimal.</li>
+</ul></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="learning-to-rank-with-multiple-objectives" class="level1">

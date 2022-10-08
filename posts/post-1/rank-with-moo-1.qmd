@@ -126,9 +126,6 @@ Then the training data $x_i$ in a pointwise method will  essentially be every qu
 
 Since each document is scored independently with the absolute relevance as the target label, the task is no different from any standard classification or regression task. As such any standard ml algorithms can be levergaed in this setting.
 
-- Advantage: Simplicity, Any standard ML models can be redily applied
-- Disadvantage: The results can be often sub-optimal due to not utilizing the full information of the entire list of matching documents for each query & This requires explicit labels while constructing the dataset, and can be quite expensive. 
-
 ## Pairwise method
 
 In pairwise method, the goal is to learn a pointwise scoring function $f(q, d_i)$ similar to a pointwise formulation. However, the key difference arises in how the training data is consructed - where we take pairs of documents within the same query as training samples. 
@@ -139,11 +136,67 @@ In pairwise method, the goal is to learn a pointwise scoring function $f(q, d_i)
 4. $x_4 \to q_1, (d_4, d_5)$
 
 In this setting, a new set of pairwise binary labels are derived, by comapring the individual relevance score in each pair. 
-For example, given the first query $q_1$
+For example, given the first query $q_1$, if $y_1==$ (i.e.. an irrelevant document) for $d_1$ & $y_2=3$ (i.e.. a Highly relevant document) for $d_2$
+then we can create a new label $y_1<y_2$ for the pair of docs $(d_1, d_2)$ - by doing so we have essentially converted this back to a binary classification task again.
 
+Now in order to learn the function $f(q, d_i)$ which is still pointwise, but in a pairwise manner, we model the difference in scores probablistically as follows:
 
-- Advantage: We don't need explicit labels, Only pairwise preferences are required. This is an advantage because sometimes we are only able to infer the pairwise preference from collected user behavior & the model learns how to rank directly, even though its a pairwise setting, but in theory it can approximate the performance of a general ranking task. 
-- Disadvantage: The Core Scoring mechanism is still pointwise. Hence, that relative information in the feature space among different documents given the same query is still not fully leveraged.
+$$\begin{eqnarray} P(i>j) \equiv \frac{1}{1+exp^{-(s_i - s_j)}}\end{eqnarray}$$
+
+i.e, if document $i$ is better matched than document $j$ (denoted as $i>j$), then the probability of the scoring function to have scored $f(q, d_i) = S_i$ should be close to 1. In other words, the model is trying to learn, given a query, how to score a pair of documents such that a more relevant document would be scored higher.
+
+## Listwise method
+
+Listwise methods, solve the problem of ranking by learning to score the entire list jointly and they do so via two main sub techniques: 
+
+- Direct optimization of IR measures such as NDCG.(Eg: SoftRank, AdaRank).
+- Minimize a loss function that is defined based on understanding the unique properties of the kind of ranking you are trying to achieve. (E.g. ListNet, ListMLE).
+
+Let's do a quick review of one of these approaches: 
+
+Consider ListNet, Which is based on the concept of permutation probability of a list of items. In this case we assume there is a pointwise scoring function $f(q,di)$ used to score and rank a given list of items. But instead of modeling the probability as a pairwise comparison using scoring difference, we model the probability of the entire list of results. In this setting our documents and query dataset would appear like this: 
+
+1. $x_1 : q_1, (d_1, d_2)$
+2. $x_2 : q_2, (d_3, d_4, d_5)$
+
+First let's look at the Permutation probability. Let's denote $π$ as a specific permutation of a given list of length $n$, 
+$\Theta (s_i) = f(q, d_i)$ as any increasing function of scoring $s_i$ given a query $q$ and a document $i$. 
+The probability of having a permutation $π$ can be written as follows:
+
+$$\begin{eqnarray} P(\pi) = \prod_{i=1}^n \frac{\phi(s_i)}{\sum_{k=i}^n\phi(s_k)} \end{eqnarray}$$
+
+To illustrate consider a list of 3 items, then the probability of returning the permutation $s_1$,$s_2$,$s_3$ is calculated as follows: 
+
+$$\begin{eqnarray} P(\pi = \{s_1, s_2, s_3\}) = \frac{\phi(s_1)}{\phi(s_1) + \phi(s_2) + \phi(s_3)} \cdot \frac{\phi(s_2)}{\phi(s_2) + \phi(s_3)} \cdot \frac{\phi(s_3)}{\phi(s_3)} \end{eqnarray}$$
+
+Due to computational complexity, ListNet simplies the problem by looking at only the top-one probability of a given item. The top-one probability of object i equals the sum of the permutation probabilities of permutations in which object i is ranked on the top. Indeed, the top-one probability of object i can be written as:
+
+$$\begin{eqnarray} P(i) = \frac{\phi(s_i)}{\sum_{k=1}^n \phi(s_k)} \end{eqnarray}$$
+
+Given any two list of items represented by top-one probabilities, we can now measure the difference between them using cross entropy. Then we can use an ml algorithm which minimises that cross entropy. The choice of function $ϕ(⋅)$, can be as simple as just an exponential function. When $ϕ(⋅)$ is expotential and the list length is two, the solution basically reduces to a pairwise method as described earlier.
+
+With that brief introduction out of the way, let's also quickly look at the advantages and disadvantages of each of these approaches: 
+
++---------+------------------------------------------+------------------------------------+
+| Method  | Advantages                               | Disadvantages                      |
++=========+==========================================+====================================+
+|Pointwise| - Simplicity, Any standard ML models can | - The results can be often sub-optimal due to not utilizing the full information of the |
+|         |   be applied without any changes.        |   entire list of matching documents for each query.|
+|         |                                          | - This requires explicit labels while constructing the dataset, and can be quite expensive.|
++---------+------------------------------------------+--------------------------------------------------------------------------------------------+
+|Pairwise | - We don't need explicit labels,         | - The Core Scoring mechanism is still pointwise. |
+|         |   Only pairwise preferences are required.| Hence, that relative information in the feature space among different |
+|         | - The model learns how to rank directly, | documents given the same query is still not fully leveraged.|
+|         |   even though its a pairwise setting,    | |
+|         |   but in theory it can approximate the   | |
+|         |   performance of a general ranking task. | |
++---------+------------------------------------------+-+
+|Listwise | - Theoretically this is a good solution  |- Costly to compute in its theoretical form and    |
+|         |   for a ranking task.                    | hence several approximations are used in practice.|
+|         |                                          |- Scoring function is still pointwise,             |
+|         |                                          | which could be sub-optimal.                       | 
++---------+------------------------------------------+---------------------------------------------------+
+
 
 
 # Learning to rank with Multiple Objectives 
