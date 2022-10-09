@@ -1,5 +1,5 @@
 ---
-title: "Rank, Rank & Rank: A Primer"
+title: "Rank, Rank & Rank: A Long Notes"
 subtitle: "Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics & Multiple Objective Optimisation for Ranking."
 author: "Bharath G.S & Rita Anjana"
 date: "2022-10-14"
@@ -234,6 +234,28 @@ Here is a simple example for computing MAP:
 ![](assets/map.jpeg)
 
 ## Mean Reciprocal Rank (MRR) & Expected Reciprocal Rank (ERR)
+
+Reciprocal rank metrics focus mainly on the first correctly predicted relevant item in a list. Given a list of items, and say $r_i$ is the rank of the highest ranking relevant item & if the the 2nd item is the first relevant item in the list, then the reciprocal rank for this query would be $\frac{1}{2}$. By extension, each query will have a reciprocal rank. Hence, Mean reciprocal rank is essentially the average of reciprocal rank for all the queries, which would be represented as follows: 
+
+$$MRR \equiv \frac{1}{Q} \sum_{i=1}^Q\frac{1}{r_i}$$
+
+ Expected reciprocal rank tries to quantify how useful a document at rank $i$ conditioned on the degree of relevance of documents at rank less than $i$ are. The intution behind this is based on the empirical findings from web search task, that the likelihood a user will examine the document at rank $i$ is dependent on how satisfied the user was with previously observed documents in the list. 
+
+ Lets assume the probability of a user finding the result is satisfied at position $i$ in a list of items is denoted as $R_i$ & the likelihood of a session for which the user is satisfied and stops at position $r$ is: $$\prod_{i=1}^{r-1}(1 - R_i)R_r$$
+
+ Now we can model $R_i$ such that it is an increasing function of relevance:
+
+ $$R = R(g) \equiv \frac{2^g - 1}{2^{g_{max}}}$$
+
+ where $g$ is the graded relevance such that $g \in \{0, 1, ..., g_{max}\}$ & $g = 0$ implies an irrelevant document and $g = g_{max}$ implies a relevant document.
+
+ Now we can define ERR as follows: 
+ 
+ $$ERR \equiv \sum_{r=1}^n\frac{1}{r}R_r\prod_{i=1}^{r-1}(1-R_i)$$
+
+ Here $\frac{1}{r}$ is treated as a utility function $\tau(r)$ that satisfies $\tau(1) = 1$ and $\tau(r) \rightarrow 0$ as $r \rightarrow \infty$.
+
+Note that ERR is a metric on a list with a single query, To evaluate results from multiple queries, we will need to further average ERRs among queries.
 
 ![](assets/mrr.jpeg)
 
