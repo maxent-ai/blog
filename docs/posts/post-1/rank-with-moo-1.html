@@ -9,7 +9,7 @@
 <meta name="author" content="Bharath G.S &amp; Rita Anjana">
 <meta name="dcterms.date" content="2022-10-14">
 
-<title>maxent.blog - Rank, Rank &amp; Rank: A Long Notes</title>
+<title>maxent.blog - The Path towards Marketplace recommendations: Part-I</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -73,11 +73,11 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="maxent.blog - Rank, Rank &amp; Rank: A Long Notes">
-<meta property="og:description" content="Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics &amp; Multiple Objective Optimisation for Ranking.">
+<meta property="og:title" content="maxent.blog - The Path towards Marketplace recommendations: Part-I">
+<meta property="og:description" content="The Foundation: A Notes on Recsys, LTR, Ranking Evaluation metrics &amp; Multi Objective Ranking in practice.">
 <meta property="og:site-name" content="maxent.blog">
-<meta name="twitter:title" content="maxent.blog - Rank, Rank &amp; Rank: A Long Notes">
-<meta name="twitter:description" content="Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics &amp; Multiple Objective Optimisation for Ranking.">
+<meta name="twitter:title" content="maxent.blog - The Path towards Marketplace recommendations: Part-I">
+<meta name="twitter:description" content="The Foundation: A Notes on Recsys, LTR, Ranking Evaluation metrics &amp; Multi Objective Ranking in practice.">
 <meta name="twitter:creator" content="@maxentlabs">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -126,8 +126,8 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Rank, Rank &amp; Rank: A Long Notes</h1>
-            <p class="subtitle lead">Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics &amp; Multiple Objective Optimisation for Ranking.</p>
+      <h1 class="title">The Path towards Marketplace recommendations: Part-I</h1>
+            <p class="subtitle lead">The Foundation: A Notes on Recsys, LTR, Ranking Evaluation metrics &amp; Multi Objective Ranking in practice.</p>
                                 <div class="quarto-categories">
                 <div class="quarto-category">ltr</div>
                 <div class="quarto-category">recsys</div>
@@ -330,7 +330,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 </ol>
 <p>In this setting, a new set of pairwise binary labels are derived, by comapring the individual relevance score in each pair. For example, given the first query <span class="math inline">\(q_1\)</span>, if <span class="math inline">\(y_1==\)</span> (i.e.. an irrelevant document) for <span class="math inline">\(d_1\)</span> &amp; <span class="math inline">\(y_2=3\)</span> (i.e.. a Highly relevant document) for <span class="math inline">\(d_2\)</span> then we can create a new label <span class="math inline">\(y_1&lt;y_2\)</span> for the pair of docs <span class="math inline">\((d_1, d_2)\)</span> - by doing so we have essentially converted this back to a binary classification task again.</p>
 <p>Now in order to learn the function <span class="math inline">\(f(q, d_i)\)</span> which is still pointwise, but in a pairwise manner, we model the difference in scores probablistically as follows:</p>
-<p><span class="math display">\[\begin{eqnarray} P(i&gt;j) \equiv \frac{1}{1+exp^{-(s_i - s_j)}}\end{eqnarray}\]</span></p>
+<p><span class="math display">\[P(i&gt;j) \equiv \frac{1}{1+exp^{-(s_i - s_j)}}\]</span></p>
 <p>i.e, if document <span class="math inline">\(i\)</span> is better matched than document <span class="math inline">\(j\)</span> (denoted as <span class="math inline">\(i&gt;j\)</span>), then the probability of the scoring function to have scored <span class="math inline">\(f(q, d_i) = S_i\)</span> should be close to 1. In other words, the model is trying to learn, given a query, how to score a pair of documents such that a more relevant document would be scored higher.</p>
 </section>
 <section id="listwise-method" class="level2">
@@ -347,11 +347,11 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <li><span class="math inline">\(x_2 : q_2, (d_3, d_4, d_5)\)</span></li>
 </ol>
 <p>First let’s look at the Permutation probability. Let’s denote <span class="math inline">\(π\)</span> as a specific permutation of a given list of length <span class="math inline">\(n\)</span>, <span class="math inline">\(\Theta (s_i) = f(q, d_i)\)</span> as any increasing function of scoring <span class="math inline">\(s_i\)</span> given a query <span class="math inline">\(q\)</span> and a document <span class="math inline">\(i\)</span>. The probability of having a permutation <span class="math inline">\(π\)</span> can be written as follows:</p>
-<p><span class="math display">\[\begin{eqnarray} P(\pi) = \prod_{i=1}^n \frac{\phi(s_i)}{\sum_{k=i}^n\phi(s_k)} \end{eqnarray}\]</span></p>
+<p><span class="math display">\[P(\pi) = \prod_{i=1}^n \frac{\phi(s_i)}{\sum_{k=i}^n\phi(s_k)}\]</span></p>
 <p>To illustrate consider a list of 3 items, then the probability of returning the permutation <span class="math inline">\(s_1\)</span>,<span class="math inline">\(s_2\)</span>,<span class="math inline">\(s_3\)</span> is calculated as follows:</p>
-<p><span class="math display">\[\begin{eqnarray} P(\pi = \{s_1, s_2, s_3\}) = \frac{\phi(s_1)}{\phi(s_1) + \phi(s_2) + \phi(s_3)} \cdot \frac{\phi(s_2)}{\phi(s_2) + \phi(s_3)} \cdot \frac{\phi(s_3)}{\phi(s_3)} \end{eqnarray}\]</span></p>
+<p><span class="math display">\[P(\pi = \{s_1, s_2, s_3\}) = \frac{\phi(s_1)}{\phi(s_1) + \phi(s_2) + \phi(s_3)} \cdot \frac{\phi(s_2)}{\phi(s_2) + \phi(s_3)} \cdot \frac{\phi(s_3)}{\phi(s_3)}\]</span></p>
 <p>Due to computational complexity, ListNet simplies the problem by looking at only the top-one probability of a given item. The top-one probability of object i equals the sum of the permutation probabilities of permutations in which object i is ranked on the top. Indeed, the top-one probability of object i can be written as:</p>
-<p><span class="math display">\[\begin{eqnarray} P(i) = \frac{\phi(s_i)}{\sum_{k=1}^n \phi(s_k)} \end{eqnarray}\]</span></p>
+<p><span class="math display">\[P(i) = \frac{\phi(s_i)}{\sum_{k=1}^n \phi(s_k)}\]</span></p>
 <p>Given any two list of items represented by top-one probabilities, we can now measure the difference between them using cross entropy. Then we can use an ml algorithm which minimises that cross entropy. The choice of function <span class="math inline">\(ϕ(⋅)\)</span>, can be as simple as just an exponential function. When <span class="math inline">\(ϕ(⋅)\)</span> is expotential and the list length is two, the solution basically reduces to a pairwise method as described earlier.</p>
 <p>With that brief introduction out of the way, let’s also quickly look at the advantages and disadvantages of each of these approaches:</p>
 <table class="table">
@@ -439,9 +439,9 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <section id="mean-average-precision-map" class="level2">
 <h2 class="anchored" data-anchor-id="mean-average-precision-map">Mean Average Precision (MAP)</h2>
 <p>MAP is a measure based on binary label of relevancy. To compute this first we define precision at k for a given query <span class="math inline">\(P@k(q)\)</span> as:</p>
-<p><span class="math display">\[\begin{eqnarray} P@k(q) \equiv \frac{\sum_{i=1}^k r_i}{k} \end{eqnarray}\]</span></p>
+<p><span class="math display">\[P@k(q) \equiv \frac{\sum_{i=1}^k r_i}{k}\]</span></p>
 <p>for an ordered list of prediction <span class="math inline">\(r_i\)</span> for all <span class="math inline">\(k\)</span> items. <span class="math inline">\(ri=1\)</span> if it is relevant and 0 otherwise.Then we define the average precision given a query <span class="math inline">\(AP(q)\)</span> at <span class="math inline">\(k\)</span> items as:</p>
-<p><span class="math display">\[\begin{eqnarray} AP(q)@k \equiv \frac{1}{\sum_{i=1}^k r_i} \sum_{i=1}^k P@i(q) \times r_i \end{eqnarray}\]</span></p>
+<p><span class="math display">\[AP(q)@k \equiv \frac{1}{\sum_{i=1}^k r_i} \sum_{i=1}^k P@i(q) \times r_i\]</span></p>
 <p>Mean Average Precision is just the mean of <span class="math inline">\(AP(q)\)</span> for all queries:</p>
 <p><span class="math display">\[MAP \equiv \frac{\sum_{q=1}^Q AP(q)}{Q}\]</span></p>
 <p>Also, MAP is an order sensitive metric because of the term <span class="math inline">\(r_i\)</span> in the calculation of AP. It is essentially taking the average of precision at each ranking position and penalizing the precision at positions with irrelevant item by strcitly setting them to zeroes.</p>
@@ -487,19 +487,12 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
-<div class="callout-note callout callout-style-simple no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><strong><em>Next in Series - MOO Ranking via Scalarisation - The Fine Print</em></strong>, In which we will do a deep dive of various approaches to scalarisation and a survey on how it’s done in the industry, with a reference example implementation &amp; system design.</p>
-</div>
-</div>
-</div>
 </section>
-<section id="appendix" class="level1">
-<h1>Appendix</h1>
+<section id="acknowledgement" class="level1">
+<h1>Acknowledgement</h1>
+</section>
+<section id="reference" class="level1">
+<h1>Reference</h1>
 
 
 </section>
