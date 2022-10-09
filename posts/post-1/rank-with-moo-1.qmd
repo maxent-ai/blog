@@ -261,7 +261,26 @@ Note that ERR is a metric on a list with a single query, To evaluate results fro
 
 ## Normalized Discounted Cumulative Gain (NDCG)
 
-Normalized Discounted Cumulative Gain (NDCG) is one of the most popular metrics for measuring the quality of a set of ranked items.
+Normalized Discounted Cumulative Gain (NDCG) is one of the most popular metric for measuring the quality of a set of ranked items in search or recommendations. If we were to break the assumptions made by this metric in simple terms, it would be as follows:  
+
+1. Cumulative Gain: Very relevant items are more useful than somewhat relevant items which are more useful than completely irrelevant items.
+2. Discounting: Relevant items are more useful when they appear earlier in a list of ranked items.
+3. Normalization: The result of the ranking should be irrelevant to the query performed. 
+
+Let's define Discounted Cumulative Gain at position $k$ as follows:
+
+$$DCG@k \equiv \sum_{i=1}^k\frac{2^{l_i} - 1}{log_2(i + 1)}$$
+
+where $l_i$ is the grading of relevance at rank $i$. Intutively, the numerator is simply an increasing function of relevance, the more relevant the higher. This is the *gain* from each item. The denominator is a decreasing function of ranking position, this is the *discounted* component of the metric. Collectively, higher relevance gains more score, but the lower it is ranked the higher also the discount. Essentially, the metric will prefer higher relevant item to be ranked higher, which is the desired outcome.
+
+NDCG is then defined as:
+
+$$NDCG@k = \frac{DCG@k}{IDCG@k}$$
+
+where $IDCG@k$ is the *Ideal* DCG@k given the result. DCG@k is calculated by sorting the given list of items by its true relevance labels.
+and IDCG@k is the maximum possible DCG@K value one can get given a ranked list of items.
+
+Here is a simple example for computing NDCG:
 
 ![](assets/ndcg.jpeg)
 
