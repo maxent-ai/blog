@@ -106,7 +106,7 @@ Generally, this means we try to learn a function $f(q, D)$ given a query $q$ & a
 
 ## Ranking Task
 
-Given a query $q$, and a set of $n$ documents $D=d1,d2,...,dn$, we'd like to learn a function $f$ such that $f(q, D)$ will predict the relevance of any given document associated with a query.
+Given a query $q$, and a set of $n$ documents $D=d_1,d_2,...,dn$, we'd like to learn a function $f$ such that $f(q, D)$ will predict the relevance of any given document associated with a query.
 
 ## Pointwise method
 
@@ -125,7 +125,7 @@ Then the training data $x_i$ in a pointwise method will  essentially be every qu
 4. $x_4 : q_2, d_4$
 5. $x_5 : q_2, d_5$
 
-Since each document is scored independently with the absolute relevance as the target label, the task is no different from any standard classification or regression task. As such any standard ml algorithms can be levergaed in this setting.
+Since each document is scored independently with the absolute relevance as the target label, the task is no different from any standard classification or regression task. As such any standard ml algorithms can be leveraged in this setting.
 
 ## Pairwise method
 
@@ -238,6 +238,8 @@ Here is a simple example for computing MAP:
 ![](assets/mrr.jpeg)
 
 ## Normalized Discounted Cumulative Gain (NDCG)
+
+Normalized Discounted Cumulative Gain (NDCG) is one of the most popular metrics for measuring the quality of a set of ranked items.
 
 ![](assets/ndcg.jpeg)
 
