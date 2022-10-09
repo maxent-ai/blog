@@ -461,11 +461,24 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <p><span class="math display">\[ERR \equiv \sum_{r=1}^n\frac{1}{r}R_r\prod_{i=1}^{r-1}(1-R_i)\]</span></p>
 <p>Here <span class="math inline">\(\frac{1}{r}\)</span> is treated as a utility function <span class="math inline">\(\tau(r)\)</span> that satisfies <span class="math inline">\(\tau(1) = 1\)</span> and <span class="math inline">\(\tau(r) \rightarrow 0\)</span> as <span class="math inline">\(r \rightarrow \infty\)</span>.</p>
 <p>Note that ERR is a metric on a list with a single query, To evaluate results from multiple queries, we will need to further average ERRs among queries.</p>
+<p>Here is a simple example for computing MRR:</p>
 <p><img src="assets/mrr.jpeg" class="img-fluid"></p>
 </section>
 <section id="normalized-discounted-cumulative-gain-ndcg" class="level2">
 <h2 class="anchored" data-anchor-id="normalized-discounted-cumulative-gain-ndcg">Normalized Discounted Cumulative Gain (NDCG)</h2>
-<p>Normalized Discounted Cumulative Gain (NDCG) is one of the most popular metrics for measuring the quality of a set of ranked items.</p>
+<p>Normalized Discounted Cumulative Gain (NDCG) is one of the most popular metric for measuring the quality of a set of ranked items in search or recommendations. If we were to break the assumptions made by this metric in simple terms, it would be as follows:</p>
+<ol type="1">
+<li>Cumulative Gain: Very relevant items are more useful than somewhat relevant items which are more useful than completely irrelevant items.</li>
+<li>Discounting: Relevant items are more useful when they appear earlier in a list of ranked items.</li>
+<li>Normalization: The result of the ranking should be irrelevant to the query performed.</li>
+</ol>
+<p>Let’s define Discounted Cumulative Gain at position <span class="math inline">\(k\)</span> as follows:</p>
+<p><span class="math display">\[DCG@k \equiv \sum_{i=1}^k\frac{2^{l_i} - 1}{log_2(i + 1)}\]</span></p>
+<p>where <span class="math inline">\(l_i\)</span> is the grading of relevance at rank <span class="math inline">\(i\)</span>. Intutively, the numerator is simply an increasing function of relevance, the more relevant the higher. This is the <em>gain</em> from each item. The denominator is a decreasing function of ranking position, this is the <em>discounted</em> component of the metric. Collectively, higher relevance gains more score, but the lower it is ranked the higher also the discount. Essentially, the metric will prefer higher relevant item to be ranked higher, which is the desired outcome.</p>
+<p>NDCG is then defined as:</p>
+<p><span class="math display">\[NDCG@k = \frac{DCG@k}{IDCG@k}\]</span></p>
+<p>where <span class="math inline">\(IDCG@k\)</span> is the <em>Ideal</em> DCG@k given the result. DCG@k is calculated by sorting the given list of items by its true relevance labels. and IDCG@k is the maximum possible DCG@K value one can get given a ranked list of items.</p>
+<p>Here is a simple example for computing NDCG:</p>
 <p><img src="assets/ndcg.jpeg" class="img-fluid"></p>
 </section>
 </section>

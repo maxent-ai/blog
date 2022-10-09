@@ -257,11 +257,11 @@ $$MRR \equiv \frac{1}{Q} \sum_{i=1}^Q\frac{1}{r_i}$$
 
 Note that ERR is a metric on a list with a single query, To evaluate results from multiple queries, we will need to further average ERRs among queries.
 
+Here is a simple example for computing MRR:
+
 ![](assets/mrr.jpeg)
 
 ## Normalized Discounted Cumulative Gain (NDCG)
-
-Normalized Discounted Cumulative Gain (NDCG) is one of the most popular metrics for measuring the quality of a set of ranked items.
 
 ![](assets/ndcg.jpeg)
 
