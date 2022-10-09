@@ -9,7 +9,7 @@
 <meta name="author" content="Bharath G.S &amp; Rita Anjana">
 <meta name="dcterms.date" content="2022-10-14">
 
-<title>maxent.blog - Rank, Rank &amp; Rank: A Primer</title>
+<title>maxent.blog - Rank, Rank &amp; Rank: A Long Notes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -73,10 +73,10 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="maxent.blog - Rank, Rank &amp; Rank: A Primer">
+<meta property="og:title" content="maxent.blog - Rank, Rank &amp; Rank: A Long Notes">
 <meta property="og:description" content="Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics &amp; Multiple Objective Optimisation for Ranking.">
 <meta property="og:site-name" content="maxent.blog">
-<meta name="twitter:title" content="maxent.blog - Rank, Rank &amp; Rank: A Primer">
+<meta name="twitter:title" content="maxent.blog - Rank, Rank &amp; Rank: A Long Notes">
 <meta name="twitter:description" content="Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics &amp; Multiple Objective Optimisation for Ranking.">
 <meta name="twitter:creator" content="@maxentlabs">
 <meta name="twitter:card" content="summary_large_image">
@@ -126,7 +126,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Rank, Rank &amp; Rank: A Primer</h1>
+      <h1 class="title">Rank, Rank &amp; Rank: A Long Notes</h1>
             <p class="subtitle lead">Part I - An Overview of Recommendation systems, LTR, Ranking Evaluation Metrics &amp; Multiple Objective Optimisation for Ranking.</p>
                                 <div class="quarto-categories">
                 <div class="quarto-category">ltr</div>
@@ -299,7 +299,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 </ol>
 <section id="ranking-task" class="level2">
 <h2 class="anchored" data-anchor-id="ranking-task">Ranking Task</h2>
-<p>Given a query <span class="math inline">\(q\)</span>, and a set of <span class="math inline">\(n\)</span> documents <span class="math inline">\(D=d1,d2,...,dn\)</span>, we’d like to learn a function <span class="math inline">\(f\)</span> such that <span class="math inline">\(f(q, D)\)</span> will predict the relevance of any given document associated with a query.</p>
+<p>Given a query <span class="math inline">\(q\)</span>, and a set of <span class="math inline">\(n\)</span> documents <span class="math inline">\(D=d_1,d_2,...,dn\)</span>, we’d like to learn a function <span class="math inline">\(f\)</span> such that <span class="math inline">\(f(q, D)\)</span> will predict the relevance of any given document associated with a query.</p>
 </section>
 <section id="pointwise-method" class="level2">
 <h2 class="anchored" data-anchor-id="pointwise-method">Pointwise method</h2>
@@ -317,7 +317,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <li><span class="math inline">\(x_4 : q_2, d_4\)</span></li>
 <li><span class="math inline">\(x_5 : q_2, d_5\)</span></li>
 </ol>
-<p>Since each document is scored independently with the absolute relevance as the target label, the task is no different from any standard classification or regression task. As such any standard ml algorithms can be levergaed in this setting.</p>
+<p>Since each document is scored independently with the absolute relevance as the target label, the task is no different from any standard classification or regression task. As such any standard ml algorithms can be leveraged in this setting.</p>
 </section>
 <section id="pairwise-method" class="level2">
 <h2 class="anchored" data-anchor-id="pairwise-method">Pairwise method</h2>
@@ -450,10 +450,22 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 </section>
 <section id="mean-reciprocal-rank-mrr-expected-reciprocal-rank-err" class="level2">
 <h2 class="anchored" data-anchor-id="mean-reciprocal-rank-mrr-expected-reciprocal-rank-err">Mean Reciprocal Rank (MRR) &amp; Expected Reciprocal Rank (ERR)</h2>
+<p>Reciprocal rank metrics focus mainly on the first correctly predicted relevant item in a list. Given a list of items, and say <span class="math inline">\(r_i\)</span> is the rank of the highest ranking relevant item &amp; if the the 2nd item is the first relevant item in the list, then the reciprocal rank for this query would be <span class="math inline">\(\frac{1}{2}\)</span>. By extension, each query will have a reciprocal rank. Hence, Mean reciprocal rank is essentially the average of reciprocal rank for all the queries, which would be represented as follows:</p>
+<p><span class="math display">\[MRR \equiv \frac{1}{Q} \sum_{i=1}^Q\frac{1}{r_i}\]</span></p>
+<p>Expected reciprocal rank tries to quantify how useful a document at rank <span class="math inline">\(i\)</span> conditioned on the degree of relevance of documents at rank less than <span class="math inline">\(i\)</span> are. The intution behind this is based on the empirical findings from web search task, that the likelihood a user will examine the document at rank <span class="math inline">\(i\)</span> is dependent on how satisfied the user was with previously observed documents in the list.</p>
+<p>Lets assume the probability of a user finding the result is satisfied at position <span class="math inline">\(i\)</span> in a list of items is denoted as <span class="math inline">\(R_i\)</span> &amp; the likelihood of a session for which the user is satisfied and stops at position <span class="math inline">\(r\)</span> is: <span class="math display">\[\prod_{i=1}^{r-1}(1 - R_i)R_r\]</span></p>
+<p>Now we can model <span class="math inline">\(R_i\)</span> such that it is an increasing function of relevance:</p>
+<p><span class="math display">\[R = R(g) \equiv \frac{2^g - 1}{2^{g_{max}}}\]</span></p>
+<p>where <span class="math inline">\(g\)</span> is the graded relevance such that <span class="math inline">\(g \in \{0, 1, ..., g_{max}\}\)</span> &amp; <span class="math inline">\(g = 0\)</span> implies an irrelevant document and <span class="math inline">\(g = g_{max}\)</span> implies a relevant document.</p>
+<p>Now we can define ERR as follows:</p>
+<p><span class="math display">\[ERR \equiv \sum_{r=1}^n\frac{1}{r}R_r\prod_{i=1}^{r-1}(1-R_i)\]</span></p>
+<p>Here <span class="math inline">\(\frac{1}{r}\)</span> is treated as a utility function <span class="math inline">\(\tau(r)\)</span> that satisfies <span class="math inline">\(\tau(1) = 1\)</span> and <span class="math inline">\(\tau(r) \rightarrow 0\)</span> as <span class="math inline">\(r \rightarrow \infty\)</span>.</p>
+<p>Note that ERR is a metric on a list with a single query, To evaluate results from multiple queries, we will need to further average ERRs among queries.</p>
 <p><img src="assets/mrr.jpeg" class="img-fluid"></p>
 </section>
 <section id="normalized-discounted-cumulative-gain-ndcg" class="level2">
 <h2 class="anchored" data-anchor-id="normalized-discounted-cumulative-gain-ndcg">Normalized Discounted Cumulative Gain (NDCG)</h2>
+<p>Normalized Discounted Cumulative Gain (NDCG) is one of the most popular metrics for measuring the quality of a set of ranked items.</p>
 <p><img src="assets/ndcg.jpeg" class="img-fluid"></p>
 </section>
 </section>
