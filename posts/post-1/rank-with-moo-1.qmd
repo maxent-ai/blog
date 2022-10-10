@@ -5,7 +5,7 @@ author: "Bharath G.S & Rita Anjana"
 date: "2022-10-14"
 categories: [ltr, recsys, optimisation, applied-ml, marketplace, economics]
 draft: false
-comments: false    
+comments: false
 ---
 
 ![](assets/intro.png)
@@ -82,7 +82,7 @@ Researchers from Microsoft & Spotify found out that:
 
 > Recommendation systems in general suffer from what is called as an inherent problem of "superstar economics": rankings have a top and a tail end, not just for popularity, but also for relevance. In an attempt to maximize user satisfaction, recommender system optimize for relevance. This inadvertently leads to lock-in of popular and relevant suppliers, especially for users who want to minimize the effort required to interact with the system. A major side-effect of the superstar economics is the impedance to suppliers on the tail-end of the spectrum, who struggle to attract consumers, given the low exposure, and thus, are not satisfied with the marketplace. Indeed, to continue to attract more suppliers to the platform, marketplaces face an interesting problem of optimizing their models for supplier exposure, and visibility. Indeed, the suppliers (e.g. retailers, artists) would want a fair opportunity to be presented to the users.
 
-read more about this in [Towards a Fair Marketplace: Counterfactual Evaluation of the trade-off between Relevance, Fairness & Satisfaction in Recommendation Systems](https://dl.acm.org/doi/10.1145/3269206.3272027)
+Read more about this in [Towards a Fair Marketplace: Counterfactual Evaluation of the trade-off between Relevance, Fairness & Satisfaction in Recommendation Systems](https://dl.acm.org/doi/10.1145/3269206.3272027)
 
 :::
 
@@ -93,6 +93,26 @@ Before we proceed further on the track of optimising for multiple objectives (or
 # A Quick Recap on modern recsys
 
 ![](assets/recsys-wn.png)
+
+Over the past few years, a common and a central design pattern has emerged around how most industrial recommendation systems are designed. If one were to summarise this design pattern, it would appear as described in the above figure - consisting of 4 stages. Let us take a brief look at the functionality of these four stages: 
+
+## Candidate retrieval 
+
+The Retrieval & filtering stages usually are collectively refered to as candidate generation, this is a fast but coarse step which essentially narrows down the search space of items from millions of candidates for a given query to soemthing in order of 100s. 
+
+This is often achieved by an initial retrieval with some form of matching between the query and the catalog usually via an ANN, Graph based approach or some form of decision trees. Followed by a filtering stage, where invalid candidates are removed from the initial retrieval before passing onto the next stages. 
+
+## Ranking
+
+At this phase we further narrow down the initial set of items into a much smaller list that would be presented to the user. This is a slow but more precise operation - this stage is usually modelled as an LTR task or a classification task. Further, sometimes it's followed by an ordering stage which handles various types of business logic  to reorder/sort the final list of items. Some common examples of these business logic include: organising recommendations to fit genre distributions in streaming services or promoting certain segments of sellers as in case of ecommerce.  
+
+:::{.callout-tip appearance="minimal"}
+
+### 📝 Suggested reading
+
+Most Production recommendation systems are indeed complex in nature, but the above pattern which was conceptulised at Nvidea by [@Even_Oldridge](https://twitter.com/Even_Oldridge) & [@karlhigley](https://twitter.com/karlhigley) sort of provides a good overview of how these systems are designed & to read a bit more on this, refer to [Recommender Systems not just recommender models](https://medium.com/nvidia-merlin/recommender-systems-not-just-recommender-models-485c161c755e) article & also read [system-design-for-discovery](https://eugeneyan.com/writing/system-design-for-discovery/) from [@eugeneyan](https://twitter.com/eugeneyan) where he summarises this design pattern in depth and points to multiple examples from industry that follow this pattern.
+
+:::
 
 # A Quick Recap on Learning to Rank 
 

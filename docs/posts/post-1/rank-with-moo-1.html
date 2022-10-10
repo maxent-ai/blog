@@ -276,7 +276,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <blockquote class="blockquote">
 <p>Recommendation systems in general suffer from what is called as an inherent problem of “superstar economics”: rankings have a top and a tail end, not just for popularity, but also for relevance. In an attempt to maximize user satisfaction, recommender system optimize for relevance. This inadvertently leads to lock-in of popular and relevant suppliers, especially for users who want to minimize the effort required to interact with the system. A major side-effect of the superstar economics is the impedance to suppliers on the tail-end of the spectrum, who struggle to attract consumers, given the low exposure, and thus, are not satisfied with the marketplace. Indeed, to continue to attract more suppliers to the platform, marketplaces face an interesting problem of optimizing their models for supplier exposure, and visibility. Indeed, the suppliers (e.g.&nbsp;retailers, artists) would want a fair opportunity to be presented to the users.</p>
 </blockquote>
-<p>read more about this in <a href="https://dl.acm.org/doi/10.1145/3269206.3272027">Towards a Fair Marketplace: Counterfactual Evaluation of the trade-off between Relevance, Fairness &amp; Satisfaction in Recommendation Systems</a></p>
+<p>Read more about this in <a href="https://dl.acm.org/doi/10.1145/3269206.3272027">Towards a Fair Marketplace: Counterfactual Evaluation of the trade-off between Relevance, Fairness &amp; Satisfaction in Recommendation Systems</a></p>
 </div>
 </div>
 </div>
@@ -287,6 +287,29 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <section id="a-quick-recap-on-modern-recsys" class="level1">
 <h1>A Quick Recap on modern recsys</h1>
 <p><img src="assets/recsys-wn.png" class="img-fluid"></p>
+<p>Over the past few years, a common and a central design pattern has emerged around how most industrial recommendation systems are designed. If one were to summarise this design pattern, it would appear as described in the above figure - consisting of 4 stages. Let us take a brief look at the functionality of these four stages:</p>
+<section id="candidate-retrieval" class="level2">
+<h2 class="anchored" data-anchor-id="candidate-retrieval">Candidate retrieval</h2>
+<p>The Retrieval &amp; filtering stages usually are collectively refered to as candidate generation, this is a fast but coarse step which essentially narrows down the search space of items from millions of candidates for a given query to soemthing in order of 100s.</p>
+<p>This is often achieved by an initial retrieval with some form of matching between the query and the catalog usually via an ANN, Graph based approach or some form of decision trees. Followed by a filtering stage, where invalid candidates are removed from the initial retrieval before passing onto the next stages.</p>
+</section>
+<section id="ranking" class="level2">
+<h2 class="anchored" data-anchor-id="ranking">Ranking</h2>
+<p>At this phase we further narrow down the initial set of items into a much smaller list that would be presented to the user. This is a slow but more precise operation - this stage is usually modelled as an LTR task or a classification task. Further, sometimes it’s followed by an ordering stage which handles various types of business logic to reorder/sort the final list of items. Some common examples of these business logic include: organising recommendations to fit genre distributions in streaming services or promoting certain segments of sellers as in case of ecommerce.</p>
+<div class="callout-tip callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+📝 Suggested reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Most Production recommendation systems are indeed complex in nature, but the above pattern which was conceptulised at Nvidea by <a href="https://twitter.com/Even_Oldridge"><span class="citation" data-cites="Even_Oldridge">@Even_Oldridge</span></a> &amp; <a href="https://twitter.com/karlhigley"><span class="citation" data-cites="karlhigley">@karlhigley</span></a> sort of provides a good overview of how these systems are designed &amp; to read a bit more on this, refer to <a href="https://medium.com/nvidia-merlin/recommender-systems-not-just-recommender-models-485c161c755e">Recommender Systems not just recommender models</a> article &amp; also read <a href="https://eugeneyan.com/writing/system-design-for-discovery/">system-design-for-discovery</a> from <a href="https://twitter.com/eugeneyan"><span class="citation" data-cites="eugeneyan">@eugeneyan</span></a> where he summarises this design pattern in depth and points to multiple examples from industry that follow this pattern.</p>
+</div>
+</div>
+</section>
 </section>
 <section id="a-quick-recap-on-learning-to-rank" class="level1">
 <h1>A Quick Recap on Learning to Rank</h1>
