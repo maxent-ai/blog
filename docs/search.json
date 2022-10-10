@@ -70,10 +70,31 @@
     "text": "Normalized Discounted Cumulative Gain (NDCG)\nNormalized Discounted Cumulative Gain (NDCG) is one of the most popular metric for measuring the quality of a set of ranked items in search or recommendations. If we were to break the assumptions made by this metric in simple terms, it would be as follows:\n\nCumulative Gain: Very relevant items are more useful than somewhat relevant items which are more useful than completely irrelevant items.\nDiscounting: Relevant items are more useful when they appear earlier in a list of ranked items.\nNormalization: The result of the ranking should be irrelevant to the query performed.\n\nLet’s define Discounted Cumulative Gain at position \\(k\\) as follows:\n\\[DCG@k \\equiv \\sum_{i=1}^k\\frac{2^{l_i} - 1}{log_2(i + 1)}\\]\nwhere \\(l_i\\) is the grading of relevance at rank \\(i\\). Intutively, the numerator is simply an increasing function of relevance, the more relevant the higher. This is the gain from each item. The denominator is a decreasing function of ranking position, this is the discounted component of the metric. Collectively, higher relevance gains more score, but the lower it is ranked the higher also the discount. Essentially, the metric will prefer higher relevant item to be ranked higher, which is the desired outcome.\nNDCG is then defined as:\n\\[NDCG@k = \\frac{DCG@k}{IDCG@k}\\]\nwhere \\(IDCG@k\\) is the Ideal DCG@k given the result. DCG@k is calculated by sorting the given list of items by its true relevance labels. and IDCG@k is the maximum possible DCG@K value one can get given a ranked list of items.\nHere is a simple example for computing NDCG:"
   },
   {
+    "objectID": "posts/post-1/rank-with-moo-1.html#multiple-objective-optimisation",
+    "href": "posts/post-1/rank-with-moo-1.html#multiple-objective-optimisation",
+    "title": "The Path towards Marketplace recommendations: Part-I",
+    "section": "Multiple Objective Optimisation",
+    "text": "Multiple Objective Optimisation"
+  },
+  {
+    "objectID": "posts/post-1/rank-with-moo-1.html#ranking-with-multiple-objectives",
+    "href": "posts/post-1/rank-with-moo-1.html#ranking-with-multiple-objectives",
+    "title": "The Path towards Marketplace recommendations: Part-I",
+    "section": "Ranking with multiple objectives",
+    "text": "Ranking with multiple objectives"
+  },
+  {
+    "objectID": "posts/post-1/rank-with-moo-1.html#examples-in-wild",
+    "href": "posts/post-1/rank-with-moo-1.html#examples-in-wild",
+    "title": "The Path towards Marketplace recommendations: Part-I",
+    "section": "Examples in Wild",
+    "text": "Examples in Wild"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "The Foundation: A Notes on Recsys, LTR, Ranking Evaluation metrics & Multi Objective Ranking in practice.\n\n\n\n\nltr\n\n\nrecsys\n\n\noptimisation\n\n\napplied-ml\n\n\nmarketplace\n\n\neconomics\n\n\n\n\n\n\n\n\n\n\n\nOct 14, 2022\n\n\nBharath G.S & Rita Anjana\n\n\n\n\n\n\nNo matching items"
+    "text": "The Foundation: A Notes on Recsys, LTR, Ranking Evaluation metrics & Multi Objective Ranking in practice.\n\n\n\n\nltr\n\n\nrecsys\n\n\noptimisation\n\n\napplied-ml\n\n\nmarketplace\n\n\neconomics\n\n\n\n\n\n\n\n\n\n\n\nOct 20, 2022\n\n\nBharath G.S & Rita Anjana\n\n\n\n\n\n\nNo matching items"
   }
 ]
