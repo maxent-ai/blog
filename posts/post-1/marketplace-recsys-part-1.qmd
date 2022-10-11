@@ -3,7 +3,7 @@ title: "The Path towards Marketplace recommendations: Part-I"
 subtitle: "The Foundation: A Notes on Recsys, LTR, Ranking Evaluation metrics & Multi Objective Ranking in practice."
 author: "Bharath G.S & Rita Anjana"
 date: "2022-10-20"
-categories: [ltr, recsys, optimisation, applied-ml, marketplace, economics]
+categories: [ltr, recsys, optimisation, applied-ml, marketplace, economics, notes]
 draft: false
 comments: false
 # format: 
