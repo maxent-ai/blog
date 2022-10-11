@@ -8,7 +8,7 @@ listing:
   sort-ui: false
   filter-ui: false
   fields: [image, date, title, author, categories, description]
-subtitle: On Recommendation systems, information retrieval, platforms, software architecture, ML, NLP.
+subtitle: On Applied ML, NLP, Recommendation systems, information retrieval, platforms, software architecture.
 page-layout: full
 title-block-banner: rgb(242, 239, 231)
 comments: false

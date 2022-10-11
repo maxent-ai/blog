@@ -2,10 +2,10 @@ project:
   type: website
   output-dir: docs
 website:
-  title: "maxent.blog"
+  title: "जिज्ञासा"
   navbar:
     right:
-      - icon: person-badge-fill
+      - icon: diamond-half
         href: https://maxentlabs.com
       - icon: github
         href: https://github.com/maxent-ai
