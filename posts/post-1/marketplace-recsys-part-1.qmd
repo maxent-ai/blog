@@ -330,7 +330,7 @@ Let's start by defining our objectives:
 
 Let's also say the item options available to us to be displayed (let's focus on finding the top-1 item at the moment.) if plotted on a graph look something like this: 
 
-![](assets/pareto-samples.png)
+![](assets/items.png)
 
 Now, essentially we want to maximise profit margin but also we want to maximise for highly personalised & relevant shirt. If we were to solve this from a lens of single objectve optimisation two scenarios would arise: 
 
