@@ -314,14 +314,96 @@ Here is a simple example for computing NDCG:
 
 # Learning to rank with Multiple Objectives 
 
-## Multiple Objective Optimisation 
+## MOO - The What, The Why & The How.
 
-## Ranking with multiple objectives
+After that long detour, let's now look into Multiple Objective Optimisation applied to Ranking problem within a marketplace type setting involving multiple stakeholders. Let's do so with a simple illustrative example that involves similar item recommendations. Specifically, let's understand Why this is needed first.
 
-## Examples in Wild
+Picture this, A User has browsed and explored a bunch of different red shirts that he's planning to buy, and on one such open tab we've got a shirt that he's closely examining. Now, the recommendation system in the backend is also generating a bunch of similar shirts that he might be interested in, further let's say the recommendation system is optimising for two different objectives - firstly, to show not just relevant but also personalised shirts similar to his style, based on his interaction history that he might explore further & perhaps buy. Secondly, the platform also wants to make sure it's making a good profit on each sales that the recommendation system generates/leads to - hence wants to also promote shirts with a good margin. How would we do this? 
 
-# Conclusion
+Let's start by defining our objectives: 
 
-# Acknowledgement
++-----------------+----------------+
+| Objective I     | Objective II   |
++=================+================+
+| Personalisation | Price Margin   |
++-----------------+----------------+
 
-# Reference
+Let's also say the item options available to us to be displayed (let's focus on finding the top-1 item at the moment.) if plotted on a graph look something like this: 
+
+![](assets/pareto-samples.png)
+
+Now, essentially we want to maximise profit margin but also we want to maximise for highly personalised & relevant shirt. If we were to solve this from a lens of single objectve optimisation two scenarios would arise: 
+
+1. Case-I: Applying 1D Optimisation to objective I followed by optimising for objective II, i.e First we can find Highly Personalised shirts and then search for the shirt that also provides maximum margin.
+
+2. Case-II: Applying 1D Optimisation to objective II followed by optimising for objective I, i.e First we can find High Profit margin shirts and then search for the ones which are also Highly Personalised & relevant for the user's style.
+
+For a simple and better understanding of the concept, assume that someone is trying to find the best red shirt from both the perspectives manually in a physical store, and let's further also assume its a dark room. 
+
+### Case I : Highly Personalised & High Profit margin 
+
+![](assets/relevance-first.png)
+
+1. So, in this case the solver turns the torch on towards the relevance axis and discovers $T5$ as the most suitable candidate.
+2. Now from this point the solver turns towards the profit axis and turns the torch on and discovers $T6$. 
+
+### Case II : High Profit margin & High Personalisation 
+
+![](assets/profit-first.png)
+
+1. In this case the solver turns the torch on towards the profit axis and discovers $T3$ as the best candidate.
+2. Now from this point the solver turns towards the relevance axis and turns the torch on and discovers $T4$.
+
+What do we have as of now: 
+
++---------+-----------------------------+----------------------------+-------------------+
+| Process |  1st Optimization Objective | 2nd Optimization Objective | Optimal Solution  |
++=========+=============================+============================+===================+
+| 1       | Personalisation             | Profit Margin              | $T6$              |
++---------+-----------------------------+----------------------------+-------------------+
+| 2       | Profit Margin               | Personalisation            | $T4$              |
++---------+-----------------------------+----------------------------+-------------------+
+
+So, that seems odd. there's multiple solutions depending on what we actually want to achieve. If, we want to optimise for both and find the best solution, Going about in the above method seems to be not the best way. This is why, we need to optimise for finding solutions for both objectives collectively and the method or set of optimisation methods for it is called _Multiple Objective Optimization_. 
+
+Let's deine what MOO is & try to understand some other associated important concepts first, before we see how these are applied to ranking task in industry.
+
+:::{.callout-caution collapse="true" appearance="minimal"}
+## Basic Concepts - Defining the MOO Problem, Pareto Optimum & Pareto Frontier 
+
+**MOO**: Optimization that involves identifying the values of decision (or free) variables that generate the maximum or minimum of one or more objectives. In most engineering problems, there may exist multiple, conflicting objectives and solving the optimization problems is not trivial or may not be even feasible sometimes. One way to formulate this is as follows: 
+
+Given $m$ inequality constraints & $p$ equality constraints identify a vector $\bar{x}^*_n = [x^*_1, x^*_2,...,x^*_n]^T$ that optimizes 
+
+$$\bar{f}_k(\bar{x}_n) = [o_1(\bar{x}_n), o_2(\bar{x}_n),..., o_k(\bar{x}_n)]^T$$
+such that 
+
+$$g_i(\bar{x}_n) ≥ 0, i = 1, 2, . . . , m$$
+
+$$h_i( \bar{x}_n) = 0, i = 1, 2, . . . , p$$
+
+where $\bar{x}_n = [x_1, x_2, . . . , x_n]^T$ is a vector of $n$ decision variables. The constraints determine the “feasible region” $F$ and any point $\bar{x}_n ∈ F$ gives a “feasible solution” where $g_i( \bar{x}_n)$ and $h_i( \bar{x}_n)$ are the constraints imposed on decision variables. The vector function  $\bar{f}_k(\bar{x}_n)$ above is a set of $k$ objective functions, $o_i(\bar{x}_n)$ for $i = 1, · · · , k$, representing k non-commensurable criteria.
+
+**Pareto Optimum**: A point  $\bar{x}^∗$ is “Pareto optimal” (for minimisation task) if the following holds for every $\bar{x}_n ∈ F$
+
+$$\bar{f}_k(\bar{x}^*_n) ≤  \bar{f}_k( \bar{x}_n)$$
+
+where $\bar{f}_k(\bar{x}_n) = [o_1(\bar{x}_n), o_2(\bar{x}_n),..., o_k(\bar{x}_n)]^T$, $\bar{f}^*_k(\bar{x}^*_n) = [o_1(\bar{x}^*_n), o_2(\bar{x}^*_n),..., o_k(\bar{x}^*_n)]^T$
+
+Pareto optimality gives a set of nondominated solutions. A feasible solution $x$ is called “weakly nondominated” if there is no $y ∈ F$ , such that $o_i(y) < o_i(x)$ for all $i = 1, 2, ..., k$. This means that there is no other feasible solution that can strictly dominate $x$. A feasible solution $x$ is called “strongly nondominated” if there is no $y ∈ F$ , such that $o_i(y) ≤ o_i(x)$ for all $i = 1, 2, ...k$, and $o_i(y) < o_i(x)$ for at least one $i$. This means that there is no other feasible solution that can improve some objectives without worsening at least one other objective. If $x$ is “strongly nondominated”, it is also “weakly nondominated”.
+
+**Pareto Frontier**: A set (of feasible solutions) that is Pareto efficient is called the Pareto frontier, Pareto set, or Pareto front. The
+optimal solutions can be determined based on the tradeoffs within this set based on a designer’s decisions for acceptable performance.
+
+read more on this from [A Survey on Modeling and Optimizing Multi-Objective Systems](https://people.cs.vt.edu/~irchen/ps/Cho-ieeecst17.pdf)
+:::
+
+## Popular methods applied to LTR Setting. 🚧
+
+## Examples in Wild 🚧
+
+# Conclusion 🚧
+
+# Acknowledgement 🚧 
+
+# Reference 🚧
