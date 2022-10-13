@@ -366,7 +366,7 @@ What do we have as of now:
 
 So, that seems odd. there's multiple solutions depending on what we actually want to achieve. If, we want to optimise for both and find the best solution, Going about in the above method seems to be not the best way. This is why, we need to optimise for finding solutions for both objectives collectively and the method or set of optimisation methods for it is called _Multiple Objective Optimization_. 
 
-Let's deine what MOO is & try to understand some other associated important concepts first, before we see how these are applied to ranking task in industry.
+Let's define what MOO is & try to understand some other associated important concepts first, before we see how these are applied to ranking task in industry.
 
 :::{.callout-caution collapse="true" appearance="minimal"}
 ## Basic Concepts - Defining the MOO Problem, Pareto Optimum & Pareto Frontier 
@@ -404,6 +404,38 @@ read more on this from [A Survey on Modeling and Optimizing Multi-Objective Syst
 
 # Conclusion 🚧
 
-# Acknowledgement 🚧 
+# Reference
 
-# Reference 🚧
+1. [Multi-objective Ranking via Constrained Optimization](https://arxiv.org/pdf/2002.05753.pdf)
+2. [Multi-Objective Ranking Optimization for Product Search Using Stochastic Label Aggregation](https://assets.amazon.science/4d/9c/69cbef8346408349385c780cac48/scipub-1195.pdf)
+3. [Price and Profit Awareness in Recommender Systems](https://arxiv.org/pdf/1707.08029.pdf)
+4. [Measuring the Business Value of Recommender Systems](https://arxiv.org/pdf/1908.08328.pdf)
+5. [Multi-objective ranking using Constrained Optimization in GBTs](https://bytes.swiggy.com/multi-objective-ranking-using-constrained-optimization-in-gbts-7f814f5ed696)
+6. [Multi-Objective Ranking for Promoted Auction Items](https://medium.com/@ebaytechblog/multi-objective-ranking-for-promoted-auction-items-293bf204574f)
+7. [Recommender Systems, Not Just Recommender Models](https://medium.com/nvidia-merlin/recommender-systems-not-just-recommender-models-485c161c755e)
+8. [Automated Demand Shaping Guaranteeing View Share](https://blog.flipkart.tech/automated-demand-shaping-guaranteeing-view-share-2d1ac198e0b3)
+9. [Why nobody is talking about 10-minute deliveries anymore](https://economictimes.indiatimes.com/tech/technology/startups-recalibrate-approach-to-ten-minute-deliveries-amid-operational-challenges/articleshow/92045165.cms?from=mdr)
+10. [A Survey on Modeling and Optimizing Multi-Objective Systems](https://people.cs.vt.edu/~irchen/ps/Cho-ieeecst17.pdf)
+11. [Personalizing Similar Product Recommendations in Fashion E-commerce](https://arxiv.org/pdf/1806.11371.pdf)
+12. [Towards Recency Ranking in Web Search](http://www.wsdm-conference.org/2010/proceedings/docs/p11.pdf)
+13. [Towards a Fair Marketplace: Counterfactual Evaluation of the trade-off between Relevance, Fairness & Satisfaction in Recommendation Systems](https://dl.acm.org/doi/10.1145/3269206.3272027)
+14. [A Multi-Objective Learning to re-Rank Approach to Optimize Online Marketplaces for Multiple Stakeholders](https://arxiv.org/pdf/1708.00651.pdf)
+15. [Joint Optimization of Profit and Relevance for Recommendation Systems in E-commerce](http://ceur-ws.org/Vol-2440/short1.pdf)
+16. [A Multistakeholder Recommender Systems Algorithm for Allocating Sponsored Recommendations](http://ceur-ws.org/Vol-2440/paper1.pdf)
+17. [Using Bayesian optimization for balancing metrics in recommendation systems](https://engineering.linkedin.com/blog/2022/using-bayesian-optimization-for-balancing-metrics-in-recommendat)
+18. [Simple Objectives Work Better](http://ceur-ws.org/Vol-2440/paper5.pdf)
+19. [Click Shaping to Optimize Multiple Objectives](http://www.xuanhui.me/pub/click-shaping-kdd11.pdf)
+20. [Learning to Rank with Multi-Aspect Relevance for Vertical Search](http://www.xuanhui.me/pub/wsdm427-kang.pdf)
+21. [Sample-Rank: Weak Multi-Objective Recommendations Using Rejection Sampling](https://arxiv.org/pdf/2008.10277.pdf)
+22. [Recommending What Video to Watch Next: A Multitask Ranking System](https://daiwk.github.io/assets/youtube-multitask.pdf)
+23. [How to Kill Two Birds with One Stone: Learning to Rank with Multiple Objectives](https://www.youtube.com/watch?v=nCtM4Xg7e4k)
+24. [MRR vs MAP vs NDCG: Rank-Aware Evaluation Metrics And When To Use Them](https://medium.com/swlh/rank-aware-recsys-evaluation-metrics-5191bba16832)
+25. [Learning to rank introduction](https://everdark.github.io/k9/notebooks/ml/learning_to_rank/learning_to_rank.html)
+26. [A Gentle Introduction to Multi-Objective Optimisation](https://codemonk.in/blog/a-gentle-introduction-to-multi-objective-optimization/)
+27. [Is This What You Were Looking For?](https://www.gojek.io/blog/is-this-what-you-were-looking-for)
+28. [The“Uber-for-X” Model and the Complexity of On-Demand Delivery](https://www.techgistics.net/blog/2016/11/30/theuber-for-x-model-and-the-complexity-of-on-demand-delivery)
+29. [The Secret Sauce Behind Search Personalisation](https://www.gojek.io/blog/the-secret-sauce-behind-search-personalisation)
+30. [Mean Average Precision (MAP) For Recommender Systems](https://sdsawtelle.github.io/blog/output/mean-average-precision-MAP-for-recommender-systems.html)
+31. [Superstar economics](https://home.uchicago.edu/~vlima/courses/econ201/Superstars.pdf)
+32. [KDD 2020 Tutorial: Advances in Recommender Systems](https://sites.google.com/view/kdd20-marketplace-autorecsys/)
+33. [Timely Personalization at Peloton: A System and Algorithm for Boosting Time-Relevant Content](https://dl.acm.org/doi/pdf/10.1145/3523227.3547391)
