@@ -399,6 +399,96 @@ read more on this from [A Survey on Modeling and Optimizing Multi-Objective Syst
 :::
 
 ## Popular methods applied to LTR Setting. 🚧
+Over the years, there have been numerous approaches that have been used in LTR setting. Broadly most of these approaches, can be classified into four categories as follows:
+
+1. Label Aggregation
+2. Constraint Optimization
+3. Model Fusion/Aggregation
+4. Lexicographic
+
+Now, lets us define these approaches.
+
+## Label Aggregation
+In this method, we combine all objective functions to form a single objective function which is then minimized. Once we convert the multi-objective into a single objective by combing the labels, we solved the given LTR problem as the single objective function. Let's say for given query q, and products P, we have two different labels, $ℓ_1(q,p)$ a similarity score between query and prodct, and $ℓ_2(p)$ a profit margin for a product, we can put a new label as 
+$ℓ(q, p) = \alpha·ℓ_1(q, p) + (1 − \alpha)·ℓ2(p)$ 
+
+Note: Here $\alpha$ is manually chosen by the user. If $\alpha \in \{0,1\}$, the problem is reduced to a single objective optimization.
+
+In general, given k objectives rank function looks like below:
+
+Minimise,
+$$f(x) = \sum_{i=1}^k{\alpha_i * f_i(x)}$$
+
+Subject to $$\sum_{i=1}^k{\alpha_i = 1}$$
+
+#### Advantages
+
+1. It gives a clear interpretation of the multi-objective function and generalize it.
+2. It allows multiple parameters to be set to reflect preferences.
+
+#### Disadvantages
+
+1. It tries to optimize for each objective function, which can be computationally expensive.
+2. The setting of parameters $(\alpha_i)$ is not intuitively clear when only one solution point is desired.
+
+## Constraint Optimization 
+This method optimizes the single most important objective $f_{primary}(x)$ and treat the other objectives as constraints with pre-determined upperbound. As we saw eariler, let's say have two objectives to optimize. First objective is $ℓ_1(q,p)$ - similarity score between $(p,q)$ and second $ℓ_2(p)$ - profit margin for $o$. Then we could consider  $ℓ_1(q,p)$ as primary objective and $ℓ_2(p)$ as secondary objective. In this method we will optimize for primary objective $ℓ_1(q,p)$ subject to  $ℓ_2(p) \lesssim \epsilon$.
+
+In general, given k objectives the ranking function is as follows:
+
+$$ \min_{\forall x_i} f_l(x)$$
+Subject to $$ f_i(x) \lesssim \epsilon_i, \forall i \not =  l ,$$ 
+$\epsilon_i$ is upperbound for $f_i(x)$. And, $f_l(x)$ is the primary function to optimize.
+
+#### Advantages
+
+1. It focuses on a single objective with limits on others.
+2. It always provides a weakly Pareto optimal point, assuming that the formulation gives a solution.
+3. It is not necessary to normalize the objective functions.
+
+#### Disadvantages
+
+1. The optimization problem may be infeasible if the bounds on the objective functions are not appropriate.
+
+## Model Fusion/Aggregation
+This method is an aggregation of multiple independent ranking models. The final ranking socre is obtained by a convex combination of multiple models. As we saw earlier if we have two objectives, let's say $ℓ_1(q,p)$ - similarity between query and product and $ℓ_2(p)$ - profit margin. Then first we train the $M_{l1}$ model which optimizes for similarity score between (q,p). And further we also independently train another model $M_{l2}$ which optimizes for the profit margin. The linear combination of the models can be formulated as $M(q,p) = \alpha·M_{l1}(q, p) + (1 − α)·M_{l2}(p)$, where the hyperparameter $\alpha \in[0, .,., 1]$ controls the tradeoff between the two model scores.
+
+In general, given k objectives the ranking function looks as follows:
+
+$$M(x) = \sum_{i=1}^k (\alpha_i * M_i (x))$$
+
+where, $M_i(x)$ is an independently trained model for optimizing $i^{th}$ objective.
+
+#### Advantages
+
+2. This is used as a post-rank method, and as such easy to tweak weighting parameters.
+3. Learning for one single objective will not be affected by other objectives (decoupled objectives). 
+
+#### Disadvantages
+
+1. It’s difficult to find the optimal weight for the final ranking.
+
+## Lexicographic
+When we have more than one objective, we rank the items by ordering the objective functions according to their importance. As mentioned earlier, we have two objective functions, $ℓ_1(q,p)$ similarity between query and product as pprimary objective and $ℓ_2(p)$ profit margin as the secondary objective. Then We will order the items according to the primary objective $ℓ_1(q,p)$ and if a tie happens, then we use $ℓ_2(p)$ the secondary objective score to break the tie.
+
+In general, given k objectives, the rank function looks like below:
+
+Minimise,
+$$ f_i(x)$$
+
+Subject to $$ f_j(x) \lesssim f_j(x_j^*), j = 1 to (i-1); i \gt 1; i = 1 to k $$
+
+Here, we rank the function based on $f_i$, and where a tie occurs we break the tie based on $f_{(i+1)}$ score.
+
+#### Advantages
+
+1. It is a unique approach to specifying preferences.
+2. It does not require that the objective functions be normalized.
+
+#### Disadvantages
+
+1. It requires that additional constraints be imposed.
+2. It is computation heavy if we have more objectives.
 
 ## Examples in Wild 🚧
 
