@@ -476,7 +476,7 @@ In general, given k objectives, the rank function looks like below:
 Minimise,
 $$ f_i(x)$$
 
-Subject to $$ f_j(x) \lesssim f_j(x_j^*), j = 1 to (i-1); i \gt 1; i = 1 to k $$
+Subject to $$ f_j(x) \lesssim f_j(x_j^*), j = 1....(i-1); i \gt 1; i = 1...k $$
 
 Here, we rank the function based on $f_i$, and where a tie occurs we break the tie based on $f_{(i+1)}$ score.
 
