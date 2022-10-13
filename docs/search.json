@@ -80,8 +80,36 @@
     "objectID": "posts/post-1/marketplace-recsys-part-1.html#popular-methods-applied-to-ltr-setting.",
     "href": "posts/post-1/marketplace-recsys-part-1.html#popular-methods-applied-to-ltr-setting.",
     "title": "The Path towards Marketplace recommendations: Part-I",
-    "section": "Popular methods applied to LTR Setting. 🚧",
-    "text": "Popular methods applied to LTR Setting. 🚧"
+    "section": "Popular methods applied to LTR Setting.",
+    "text": "Popular methods applied to LTR Setting.\nOver the years, there have been numerous approaches that have been used in LTR setting. Broadly most of these approaches, can be classified into four categories as follows:\n\nLabel Aggregation\nConstraint Optimization\nModel Fusion/Aggregation\nLexicographic\n\nNow, lets us define these approaches."
+  },
+  {
+    "objectID": "posts/post-1/marketplace-recsys-part-1.html#label-aggregation",
+    "href": "posts/post-1/marketplace-recsys-part-1.html#label-aggregation",
+    "title": "The Path towards Marketplace recommendations: Part-I",
+    "section": "Label Aggregation",
+    "text": "Label Aggregation\nIn this method, we combine all objective functions to form a single objective function which is then minimized. Once we convert the multi-objective into a single objective by combing the labels, we solved the given LTR problem as the single objective function. Let’s say for given query q, and products P, we have two different labels, \\(ℓ_1(q,p)\\) a similarity score between query and prodct, and \\(ℓ_2(p)\\) a profit margin for a product, we can put a new label as \\(ℓ(q, p) = \\alpha·ℓ_1(q, p) + (1 − \\alpha)·ℓ2(p)\\)\nNote: Here \\(\\alpha\\) is manually chosen by the user. If \\(\\alpha \\in \\{0,1\\}\\), the problem is reduced to a single objective optimization.\nIn general, given k objectives rank function looks like below:\nMinimise,\n\\[f(x) = \\sum_{i=1}^k{\\alpha_i * f_i(x)}\\]\nSubject to \\[\\sum_{i=1}^k{\\alpha_i = 1}\\]\n\nAdvantages\n\nIt gives a clear interpretation of the multi-objective function and generalize it.\nIt allows multiple parameters to be set to reflect preferences.\n\n\n\nDisadvantages\n\nIt tries to optimize for each objective function, which can be computationally expensive.\nThe setting of parameters \\((\\alpha_i)\\) is not intuitively clear when only one solution point is desired."
+  },
+  {
+    "objectID": "posts/post-1/marketplace-recsys-part-1.html#constraint-optimization",
+    "href": "posts/post-1/marketplace-recsys-part-1.html#constraint-optimization",
+    "title": "The Path towards Marketplace recommendations: Part-I",
+    "section": "Constraint Optimization",
+    "text": "Constraint Optimization\nThis method optimizes the single most important objective \\(f_{primary}(x)\\) and treat the other objectives as constraints with pre-determined upperbound. As we saw eariler, let’s say have two objectives to optimize. First objective is \\(ℓ_1(q,p)\\) - similarity score between \\((p,q)\\) and second \\(ℓ_2(p)\\) - profit margin for \\(o\\). Then we could consider \\(ℓ_1(q,p)\\) as primary objective and \\(ℓ_2(p)\\) as secondary objective. In this method we will optimize for primary objective \\(ℓ_1(q,p)\\) subject to \\(ℓ_2(p) \\lesssim \\epsilon\\).\nIn general, given k objectives the ranking function is as follows:\n\\[ \\min_{\\forall x_i} f_l(x)\\]\nSubject to \\[ f_i(x) \\lesssim \\epsilon_i, \\forall i \\not =  l ,\\] \\(\\epsilon_i\\) is upperbound for \\(f_i(x)\\). And, \\(f_l(x)\\) is the primary function to optimize.\n\nAdvantages\n\nIt focuses on a single objective with limits on others.\nIt always provides a weakly Pareto optimal point, assuming that the formulation gives a solution.\nIt is not necessary to normalize the objective functions.\n\n\n\nDisadvantages\n\nThe optimization problem may be infeasible if the bounds on the objective functions are not appropriate."
+  },
+  {
+    "objectID": "posts/post-1/marketplace-recsys-part-1.html#model-fusionaggregation",
+    "href": "posts/post-1/marketplace-recsys-part-1.html#model-fusionaggregation",
+    "title": "The Path towards Marketplace recommendations: Part-I",
+    "section": "Model Fusion/Aggregation",
+    "text": "Model Fusion/Aggregation\nThis method is an aggregation of multiple independent ranking models. The final ranking socre is obtained by a convex combination of multiple models. As we saw earlier if we have two objectives, let’s say \\(ℓ_1(q,p)\\) - similarity between query and product and \\(ℓ_2(p)\\) - profit margin. Then first we train the \\(M_{l1}\\) model which optimizes for similarity score between (q,p). And further we also independently train another model \\(M_{l2}\\) which optimizes for the profit margin. The linear combination of the models can be formulated as \\(M(q,p) = \\alpha·M_{l1}(q, p) + (1 − α)·M_{l2}(p)\\), where the hyperparameter \\(\\alpha \\in[0, .,., 1]\\) controls the tradeoff between the two model scores.\nIn general, given k objectives the ranking function looks as follows:\n\\[M(x) = \\sum_{i=1}^k (\\alpha_i * M_i (x))\\]\nwhere, \\(M_i(x)\\) is an independently trained model for optimizing \\(i^{th}\\) objective.\n\nAdvantages\n\nThis is used as a post-rank method, and as such easy to tweak weighting parameters.\nLearning for one single objective will not be affected by other objectives (decoupled objectives).\n\n\n\nDisadvantages\n\nIt’s difficult to find the optimal weight for the final ranking."
+  },
+  {
+    "objectID": "posts/post-1/marketplace-recsys-part-1.html#lexicographic",
+    "href": "posts/post-1/marketplace-recsys-part-1.html#lexicographic",
+    "title": "The Path towards Marketplace recommendations: Part-I",
+    "section": "Lexicographic",
+    "text": "Lexicographic\nWhen we have more than one objective, we rank the items by ordering the objective functions according to their importance. As mentioned earlier, we have two objective functions, \\(ℓ_1(q,p)\\) similarity between query and product as pprimary objective and \\(ℓ_2(p)\\) profit margin as the secondary objective. Then We will order the items according to the primary objective \\(ℓ_1(q,p)\\) and if a tie happens, then we use \\(ℓ_2(p)\\) the secondary objective score to break the tie.\nIn general, given k objectives, the rank function looks like below:\nMinimise,\n\\[ f_i(x)\\]\nSubject to \\[ f_j(x) \\lesssim f_j(x_j^*), j = 1 to (i-1); i \\gt 1; i = 1 to k \\]\nHere, we rank the function based on \\(f_i\\), and where a tie occurs we break the tie based on \\(f_{(i+1)}\\) score.\n\nAdvantages\n\nIt is a unique approach to specifying preferences.\nIt does not require that the objective functions be normalized.\n\n\n\nDisadvantages\n\nIt requires that additional constraints be imposed.\nIt is computation heavy if we have more objectives."
   },
   {
     "objectID": "posts/post-1/marketplace-recsys-part-1.html#examples-in-wild",

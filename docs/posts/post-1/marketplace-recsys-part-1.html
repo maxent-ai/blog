@@ -613,7 +613,102 @@ Basic Concepts - Defining the MOO Problem, Pareto Optimum &amp; Pareto Frontier
 </section>
 </section>
 <section id="popular-methods-applied-to-ltr-setting." class="level2">
-<h2 class="anchored" data-anchor-id="popular-methods-applied-to-ltr-setting.">Popular methods applied to LTR Setting. 🚧</h2>
+<h2 class="anchored" data-anchor-id="popular-methods-applied-to-ltr-setting.">Popular methods applied to LTR Setting.</h2>
+<p>Over the years, there have been numerous approaches that have been used in LTR setting. Broadly most of these approaches, can be classified into four categories as follows:</p>
+<ol type="1">
+<li>Label Aggregation</li>
+<li>Constraint Optimization</li>
+<li>Model Fusion/Aggregation</li>
+<li>Lexicographic</li>
+</ol>
+<p>Now, lets us define these approaches.</p>
+</section>
+<section id="label-aggregation" class="level2">
+<h2 class="anchored" data-anchor-id="label-aggregation">Label Aggregation</h2>
+<p>In this method, we combine all objective functions to form a single objective function which is then minimized. Once we convert the multi-objective into a single objective by combing the labels, we solved the given LTR problem as the single objective function. Let’s say for given query q, and products P, we have two different labels, <span class="math inline">\(ℓ_1(q,p)\)</span> a similarity score between query and prodct, and <span class="math inline">\(ℓ_2(p)\)</span> a profit margin for a product, we can put a new label as <span class="math inline">\(ℓ(q, p) = \alpha·ℓ_1(q, p) + (1 − \alpha)·ℓ2(p)\)</span></p>
+<p>Note: Here <span class="math inline">\(\alpha\)</span> is manually chosen by the user. If <span class="math inline">\(\alpha \in \{0,1\}\)</span>, the problem is reduced to a single objective optimization.</p>
+<p>In general, given k objectives rank function looks like below:</p>
+<p>Minimise,</p>
+<p><span class="math display">\[f(x) = \sum_{i=1}^k{\alpha_i * f_i(x)}\]</span></p>
+<p>Subject to <span class="math display">\[\sum_{i=1}^k{\alpha_i = 1}\]</span></p>
+<section id="advantages" class="level4">
+<h4 class="anchored" data-anchor-id="advantages">Advantages</h4>
+<ol type="1">
+<li>It gives a clear interpretation of the multi-objective function and generalize it.</li>
+<li>It allows multiple parameters to be set to reflect preferences.</li>
+</ol>
+</section>
+<section id="disadvantages" class="level4">
+<h4 class="anchored" data-anchor-id="disadvantages">Disadvantages</h4>
+<ol type="1">
+<li>It tries to optimize for each objective function, which can be computationally expensive.</li>
+<li>The setting of parameters <span class="math inline">\((\alpha_i)\)</span> is not intuitively clear when only one solution point is desired.</li>
+</ol>
+</section>
+</section>
+<section id="constraint-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="constraint-optimization">Constraint Optimization</h2>
+<p>This method optimizes the single most important objective <span class="math inline">\(f_{primary}(x)\)</span> and treat the other objectives as constraints with pre-determined upperbound. As we saw eariler, let’s say have two objectives to optimize. First objective is <span class="math inline">\(ℓ_1(q,p)\)</span> - similarity score between <span class="math inline">\((p,q)\)</span> and second <span class="math inline">\(ℓ_2(p)\)</span> - profit margin for <span class="math inline">\(o\)</span>. Then we could consider <span class="math inline">\(ℓ_1(q,p)\)</span> as primary objective and <span class="math inline">\(ℓ_2(p)\)</span> as secondary objective. In this method we will optimize for primary objective <span class="math inline">\(ℓ_1(q,p)\)</span> subject to <span class="math inline">\(ℓ_2(p) \lesssim \epsilon\)</span>.</p>
+<p>In general, given k objectives the ranking function is as follows:</p>
+<p><span class="math display">\[ \min_{\forall x_i} f_l(x)\]</span></p>
+<p>Subject to <span class="math display">\[ f_i(x) \lesssim \epsilon_i, \forall i \not =  l ,\]</span> <span class="math inline">\(\epsilon_i\)</span> is upperbound for <span class="math inline">\(f_i(x)\)</span>. And, <span class="math inline">\(f_l(x)\)</span> is the primary function to optimize.</p>
+<section id="advantages-1" class="level4">
+<h4 class="anchored" data-anchor-id="advantages-1">Advantages</h4>
+<ol type="1">
+<li>It focuses on a single objective with limits on others.</li>
+<li>It always provides a weakly Pareto optimal point, assuming that the formulation gives a solution.</li>
+<li>It is not necessary to normalize the objective functions.</li>
+</ol>
+</section>
+<section id="disadvantages-1" class="level4">
+<h4 class="anchored" data-anchor-id="disadvantages-1">Disadvantages</h4>
+<ol type="1">
+<li>The optimization problem may be infeasible if the bounds on the objective functions are not appropriate.</li>
+</ol>
+</section>
+</section>
+<section id="model-fusionaggregation" class="level2">
+<h2 class="anchored" data-anchor-id="model-fusionaggregation">Model Fusion/Aggregation</h2>
+<p>This method is an aggregation of multiple independent ranking models. The final ranking socre is obtained by a convex combination of multiple models. As we saw earlier if we have two objectives, let’s say <span class="math inline">\(ℓ_1(q,p)\)</span> - similarity between query and product and <span class="math inline">\(ℓ_2(p)\)</span> - profit margin. Then first we train the <span class="math inline">\(M_{l1}\)</span> model which optimizes for similarity score between (q,p). And further we also independently train another model <span class="math inline">\(M_{l2}\)</span> which optimizes for the profit margin. The linear combination of the models can be formulated as <span class="math inline">\(M(q,p) = \alpha·M_{l1}(q, p) + (1 − α)·M_{l2}(p)\)</span>, where the hyperparameter <span class="math inline">\(\alpha \in[0, .,., 1]\)</span> controls the tradeoff between the two model scores.</p>
+<p>In general, given k objectives the ranking function looks as follows:</p>
+<p><span class="math display">\[M(x) = \sum_{i=1}^k (\alpha_i * M_i (x))\]</span></p>
+<p>where, <span class="math inline">\(M_i(x)\)</span> is an independently trained model for optimizing <span class="math inline">\(i^{th}\)</span> objective.</p>
+<section id="advantages-2" class="level4">
+<h4 class="anchored" data-anchor-id="advantages-2">Advantages</h4>
+<ol start="2" type="1">
+<li>This is used as a post-rank method, and as such easy to tweak weighting parameters.</li>
+<li>Learning for one single objective will not be affected by other objectives (decoupled objectives).</li>
+</ol>
+</section>
+<section id="disadvantages-2" class="level4">
+<h4 class="anchored" data-anchor-id="disadvantages-2">Disadvantages</h4>
+<ol type="1">
+<li>It’s difficult to find the optimal weight for the final ranking.</li>
+</ol>
+</section>
+</section>
+<section id="lexicographic" class="level2">
+<h2 class="anchored" data-anchor-id="lexicographic">Lexicographic</h2>
+<p>When we have more than one objective, we rank the items by ordering the objective functions according to their importance. As mentioned earlier, we have two objective functions, <span class="math inline">\(ℓ_1(q,p)\)</span> similarity between query and product as pprimary objective and <span class="math inline">\(ℓ_2(p)\)</span> profit margin as the secondary objective. Then We will order the items according to the primary objective <span class="math inline">\(ℓ_1(q,p)\)</span> and if a tie happens, then we use <span class="math inline">\(ℓ_2(p)\)</span> the secondary objective score to break the tie.</p>
+<p>In general, given k objectives, the rank function looks like below:</p>
+<p>Minimise,</p>
+<p><span class="math display">\[ f_i(x)\]</span></p>
+<p>Subject to <span class="math display">\[ f_j(x) \lesssim f_j(x_j^*), j = 1 to (i-1); i \gt 1; i = 1 to k \]</span></p>
+<p>Here, we rank the function based on <span class="math inline">\(f_i\)</span>, and where a tie occurs we break the tie based on <span class="math inline">\(f_{(i+1)}\)</span> score.</p>
+<section id="advantages-3" class="level4">
+<h4 class="anchored" data-anchor-id="advantages-3">Advantages</h4>
+<ol type="1">
+<li>It is a unique approach to specifying preferences.</li>
+<li>It does not require that the objective functions be normalized.</li>
+</ol>
+</section>
+<section id="disadvantages-3" class="level4">
+<h4 class="anchored" data-anchor-id="disadvantages-3">Disadvantages</h4>
+<ol type="1">
+<li>It requires that additional constraints be imposed.</li>
+<li>It is computation heavy if we have more objectives.</li>
+</ol>
+</section>
 </section>
 <section id="examples-in-wild" class="level2">
 <h2 class="anchored" data-anchor-id="examples-in-wild">Examples in Wild 🚧</h2>

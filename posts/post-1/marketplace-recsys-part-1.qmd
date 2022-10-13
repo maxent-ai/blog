@@ -398,7 +398,7 @@ optimal solutions can be determined based on the tradeoffs within this set based
 read more on this from [A Survey on Modeling and Optimizing Multi-Objective Systems](https://people.cs.vt.edu/~irchen/ps/Cho-ieeecst17.pdf)
 :::
 
-## Popular methods applied to LTR Setting. 🚧
+## Popular methods applied to LTR Setting.
 Over the years, there have been numerous approaches that have been used in LTR setting. Broadly most of these approaches, can be classified into four categories as follows:
 
 1. Label Aggregation
