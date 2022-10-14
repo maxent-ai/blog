@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.0.38">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -13,10 +13,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 </style>
 
 
@@ -88,9 +93,11 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-sm navbar-dark ">
       <div class="navbar-container container-fluid">
-      <a class="navbar-brand" href="../../index.html">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">जिज्ञासा</span>
-  </a>
+    </a>
+  </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -375,46 +382,38 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <p>With that brief introduction out of the way, let’s also quickly look at the advantages and disadvantages of each of these approaches:</p>
 <table class="table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 47%">
-<col style="width: 41%">
+<col style="width: 6%">
+<col style="width: 29%">
+<col style="width: 63%">
 </colgroup>
-<thead>
-<tr class="header">
-<th>Method</th>
-<th>Advantages</th>
-<th>Disadvantages</th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
-<td>Pointwise</td>
-<td><ul>
+<td rowspan="2"><h1 id="method">Method</h1>
+<p>Pointwise</p></td>
+<td rowspan="2"><h1 id="advantages">Advantages</h1>
+<ul>
 <li>Simplicity, Any standard ML models can be applied without any changes.</li>
 </ul></td>
-<td><ul>
-<li>The results can be often sub-optimal due to not utilizing the full information of the entire list of matching documents for each query.</li>
-<li>This requires explicit labels while constructing the dataset, and can be quite expensive.</li>
-</ul></td>
+<td rowspan="2">Disadvantages | ====================================+ - The results can be often sub-optimal due to not utilizing the full information of the | entire list of matching documents for each query.| - This requires explicit labels while constructing the dataset, and can be quite expensive.</td>
 </tr>
 <tr class="even">
+</tr>
+<tr class="odd">
 <td>Pairwise</td>
 <td><ul>
 <li>We don’t need explicit labels, Only pairwise preferences are required.</li>
 <li>The model learns how to rank directly, even though its a pairwise setting, but in theory it can approximate the performance of a general ranking task.</li>
 </ul></td>
-<td><ul>
-<li>The Core Scoring mechanism is still pointwise. Hence, that relative information in the feature space among different documents given the same query is still not fully leveraged.</li>
-</ul></td>
+<td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Listwise</td>
 <td><ul>
 <li>Theoretically this is a good solution for a ranking task.</li>
 </ul></td>
 <td><ul>
-<li>Costly to compute in its theoretical form and hence several approximations are used in practice.</li>
-<li>Scoring function is still pointwise, which could be sub-optimal.</li>
+<li>Costly to compute in its theoretical form and | hence several approximations are used in practice.|</li>
+<li>Scoring function is still pointwise, | which could be sub-optimal. |</li>
 </ul></td>
 </tr>
 </tbody>
@@ -457,10 +456,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <p>In general, binary metrics only consider relevant v.s. irrelevant, while graded metrics also consider the ranking among relevant items. The degree of relevancy matters in this case when scoring a list of items.</p>
 <section id="mean-average-precision-map" class="level2">
 <h2 class="anchored" data-anchor-id="mean-average-precision-map">Mean Average Precision (MAP)</h2>
-<p>MAP is a measure based on binary label of relevancy. To compute this first we define precision at k for a given query <span class="math inline">\(P@k(q)\)</span> as:</p>
-<p><span class="math display">\[P@k(q) \equiv \frac{\sum_{i=1}^k r_i}{k}\]</span></p>
-<p>for an ordered list of prediction <span class="math inline">\(r_i\)</span> for all <span class="math inline">\(k\)</span> items. <span class="math inline">\(ri=1\)</span> if it is relevant and 0 otherwise.Then we define the average precision given a query <span class="math inline">\(AP(q)\)</span> at <span class="math inline">\(k\)</span> items as:</p>
-<p><span class="math display">\[AP(q)@k \equiv \frac{1}{\sum_{i=1}^k r_i} \sum_{i=1}^k P@i(q) \times r_i\]</span></p>
+<p>MAP is a measure based on binary label of relevancy. To compute this first we define precision at k for a given query <span class="math inline">\(P@k(q)\)</span> as: <span class="math display">\[P@k(q) \equiv \frac{\sum_{i=1}^k r_i}{k}\]</span> for an ordered list of prediction <span class="math inline">\(r_i\)</span> for all <span class="math inline">\(k\)</span> items. <span class="math inline">\(ri=1\)</span> if it is relevant and 0 otherwise.Then we define the average precision given a query <span class="math inline">\(AP(q)\)</span> at <span class="math inline">\(k\)</span> items as: <span class="math display">\[AP(q)@k \equiv \frac{1}{\sum_{i=1}^k r_i} \sum_{i=1}^k P@i(q) \times r_i\]</span></p>
 <p>Mean Average Precision is just the mean of <span class="math inline">\(AP(q)\)</span> for all queries:</p>
 <p><span class="math display">\[MAP \equiv \frac{\sum_{q=1}^Q AP(q)}{Q}\]</span></p>
 <p>Also, MAP is an order sensitive metric because of the term <span class="math inline">\(r_i\)</span> in the calculation of AP. It is essentially taking the average of precision at each ranking position and penalizing the precision at positions with irrelevant item by strcitly setting them to zeroes.</p>
@@ -511,7 +507,7 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <table class="table">
 <colgroup>
 <col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 23%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -552,10 +548,10 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 <p>What do we have as of now:</p>
 <table class="table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 33%">
+<col style="width: 10%">
 <col style="width: 32%">
-<col style="width: 22%">
+<col style="width: 31%">
+<col style="width: 21%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -596,8 +592,7 @@ Basic Concepts - Defining the MOO Problem, Pareto Optimum &amp; Pareto Frontier
 <div class="callout-body-container callout-body">
 <p><strong>MOO</strong>: Optimization that involves identifying the values of decision (or free) variables that generate the maximum or minimum of one or more objectives. In most engineering problems, there may exist multiple, conflicting objectives and solving the optimization problems is not trivial or may not be even feasible sometimes. One way to formulate this is as follows:</p>
 <p>Given <span class="math inline">\(m\)</span> inequality constraints &amp; <span class="math inline">\(p\)</span> equality constraints identify a vector <span class="math inline">\(\bar{x}^*_n = [x^*_1, x^*_2,...,x^*_n]^T\)</span> that optimizes</p>
-<p><span class="math display">\[\bar{f}_k(\bar{x}_n) = [o_1(\bar{x}_n), o_2(\bar{x}_n),..., o_k(\bar{x}_n)]^T\]</span></p>
-<p>such that</p>
+<p><span class="math display">\[\bar{f}_k(\bar{x}_n) = [o_1(\bar{x}_n), o_2(\bar{x}_n),..., o_k(\bar{x}_n)]^T\]</span> such that</p>
 <p><span class="math display">\[g_i(\bar{x}_n) ≥ 0, i = 1, 2, . . . , m\]</span></p>
 <p><span class="math display">\[h_i( \bar{x}_n) = 0, i = 1, 2, . . . , p\]</span></p>
 <p>where <span class="math inline">\(\bar{x}_n = [x_1, x_2, . . . , x_n]^T\)</span> is a vector of <span class="math inline">\(n\)</span> decision variables. The constraints determine the “feasible region” <span class="math inline">\(F\)</span> and any point <span class="math inline">\(\bar{x}_n ∈ F\)</span> gives a “feasible solution” where <span class="math inline">\(g_i( \bar{x}_n)\)</span> and <span class="math inline">\(h_i( \bar{x}_n)\)</span> are the constraints imposed on decision variables. The vector function <span class="math inline">\(\bar{f}_k(\bar{x}_n)\)</span> above is a set of <span class="math inline">\(k\)</span> objective functions, <span class="math inline">\(o_i(\bar{x}_n)\)</span> for <span class="math inline">\(i = 1, · · · , k\)</span>, representing k non-commensurable criteria.</p>
@@ -628,11 +623,10 @@ Basic Concepts - Defining the MOO Problem, Pareto Optimum &amp; Pareto Frontier
 <p>In this method, we combine all objective functions to form a single objective function which is then minimized. Once we convert the multi-objective into a single objective by combing the labels, we solved the given LTR problem as the single objective function. Let’s say for given query q, and products P, we have two different labels, <span class="math inline">\(ℓ_1(q,p)\)</span> a similarity score between query and prodct, and <span class="math inline">\(ℓ_2(p)\)</span> a profit margin for a product, we can put a new label as <span class="math inline">\(ℓ(q, p) = \alpha·ℓ_1(q, p) + (1 − \alpha)·ℓ2(p)\)</span></p>
 <p>Note: Here <span class="math inline">\(\alpha\)</span> is manually chosen by the user. If <span class="math inline">\(\alpha \in \{0,1\}\)</span>, the problem is reduced to a single objective optimization.</p>
 <p>In general, given k objectives rank function looks like below:</p>
-<p>Minimise,</p>
-<p><span class="math display">\[f(x) = \sum_{i=1}^k{\alpha_i * f_i(x)}\]</span></p>
+<p>Minimise, <span class="math display">\[f(x) = \sum_{i=1}^k{\alpha_i * f_i(x)}\]</span></p>
 <p>Subject to <span class="math display">\[\sum_{i=1}^k{\alpha_i = 1}\]</span></p>
-<section id="advantages" class="level4">
-<h4 class="anchored" data-anchor-id="advantages">Advantages</h4>
+<section id="advantages-1" class="level4">
+<h4 class="anchored" data-anchor-id="advantages-1">Advantages</h4>
 <ol type="1">
 <li>It gives a clear interpretation of the multi-objective function and generalize it.</li>
 <li>It allows multiple parameters to be set to reflect preferences.</li>
@@ -650,10 +644,9 @@ Basic Concepts - Defining the MOO Problem, Pareto Optimum &amp; Pareto Frontier
 <h2 class="anchored" data-anchor-id="constraint-optimization">Constraint Optimization</h2>
 <p>This method optimizes the single most important objective <span class="math inline">\(f_{primary}(x)\)</span> and treat the other objectives as constraints with pre-determined upperbound. As we saw eariler, let’s say have two objectives to optimize. First objective is <span class="math inline">\(ℓ_1(q,p)\)</span> - similarity score between <span class="math inline">\((p,q)\)</span> and second <span class="math inline">\(ℓ_2(p)\)</span> - profit margin for <span class="math inline">\(o\)</span>. Then we could consider <span class="math inline">\(ℓ_1(q,p)\)</span> as primary objective and <span class="math inline">\(ℓ_2(p)\)</span> as secondary objective. In this method we will optimize for primary objective <span class="math inline">\(ℓ_1(q,p)\)</span> subject to <span class="math inline">\(ℓ_2(p) \lesssim \epsilon\)</span>.</p>
 <p>In general, given k objectives the ranking function is as follows:</p>
-<p><span class="math display">\[ \min_{\forall x_i} f_l(x)\]</span></p>
-<p>Subject to <span class="math display">\[ f_i(x) \lesssim \epsilon_i, \forall i \not =  l ,\]</span> <span class="math inline">\(\epsilon_i\)</span> is upperbound for <span class="math inline">\(f_i(x)\)</span>. And, <span class="math inline">\(f_l(x)\)</span> is the primary function to optimize.</p>
-<section id="advantages-1" class="level4">
-<h4 class="anchored" data-anchor-id="advantages-1">Advantages</h4>
+<p><span class="math display">\[ \min_{\forall x_i} f_l(x)\]</span> Subject to <span class="math display">\[ f_i(x) \lesssim \epsilon_i, \forall i \not =  l ,\]</span> <span class="math inline">\(\epsilon_i\)</span> is upperbound for <span class="math inline">\(f_i(x)\)</span>. And, <span class="math inline">\(f_l(x)\)</span> is the primary function to optimize.</p>
+<section id="advantages-2" class="level4">
+<h4 class="anchored" data-anchor-id="advantages-2">Advantages</h4>
 <ol type="1">
 <li>It focuses on a single objective with limits on others.</li>
 <li>It always provides a weakly Pareto optimal point, assuming that the formulation gives a solution.</li>
@@ -673,8 +666,8 @@ Basic Concepts - Defining the MOO Problem, Pareto Optimum &amp; Pareto Frontier
 <p>In general, given k objectives the ranking function looks as follows:</p>
 <p><span class="math display">\[M(x) = \sum_{i=1}^k (\alpha_i * M_i (x))\]</span></p>
 <p>where, <span class="math inline">\(M_i(x)\)</span> is an independently trained model for optimizing <span class="math inline">\(i^{th}\)</span> objective.</p>
-<section id="advantages-2" class="level4">
-<h4 class="anchored" data-anchor-id="advantages-2">Advantages</h4>
+<section id="advantages-3" class="level4">
+<h4 class="anchored" data-anchor-id="advantages-3">Advantages</h4>
 <ol start="2" type="1">
 <li>This is used as a post-rank method, and as such easy to tweak weighting parameters.</li>
 <li>Learning for one single objective will not be affected by other objectives (decoupled objectives).</li>
@@ -691,12 +684,11 @@ Basic Concepts - Defining the MOO Problem, Pareto Optimum &amp; Pareto Frontier
 <h2 class="anchored" data-anchor-id="lexicographic">Lexicographic</h2>
 <p>When we have more than one objective, we rank the items by ordering the objective functions according to their importance. As mentioned earlier, we have two objective functions, <span class="math inline">\(ℓ_1(q,p)\)</span> similarity between query and product as pprimary objective and <span class="math inline">\(ℓ_2(p)\)</span> profit margin as the secondary objective. Then We will order the items according to the primary objective <span class="math inline">\(ℓ_1(q,p)\)</span> and if a tie happens, then we use <span class="math inline">\(ℓ_2(p)\)</span> the secondary objective score to break the tie.</p>
 <p>In general, given k objectives, the rank function looks like below:</p>
-<p>Minimise,</p>
-<p><span class="math display">\[ f_i(x)\]</span></p>
-<p>Subject to <span class="math display">\[ f_j(x) \lesssim f_j(x_j^*), j = 1....(i-1); i \gt 1; i = 1...k \]</span></p>
+<p>Minimise, <span class="math display">\[ f_i(x)\]</span></p>
+<p>Subject to <span class="math display">\[ f_j(x) \lesssim f_j(x_j^*)\]</span> <span class="math inline">\(j = 1\)</span> to <span class="math inline">\((i - 1)\)</span> and <span class="math inline">\(i \gt 1;i = 1\)</span> to <span class="math inline">\(k\)</span></p>
 <p>Here, we rank the function based on <span class="math inline">\(f_i\)</span>, and where a tie occurs we break the tie based on <span class="math inline">\(f_{(i+1)}\)</span> score.</p>
-<section id="advantages-3" class="level4">
-<h4 class="anchored" data-anchor-id="advantages-3">Advantages</h4>
+<section id="advantages-4" class="level4">
+<h4 class="anchored" data-anchor-id="advantages-4">Advantages</h4>
 <ol type="1">
 <li>It is a unique approach to specifying preferences.</li>
 <li>It does not require that the objective functions be normalized.</li>
@@ -712,6 +704,81 @@ Basic Concepts - Defining the MOO Problem, Pareto Optimum &amp; Pareto Frontier
 </section>
 <section id="examples-in-wild" class="level2">
 <h2 class="anchored" data-anchor-id="examples-in-wild">Examples in Wild 🚧</h2>
+<section id="a-multi-objective-learning-to-re-rank-approach-to-optimize-online-marketplaces-for-multiple-stakeholders." class="level3">
+<h3 class="anchored" data-anchor-id="a-multi-objective-learning-to-re-rank-approach-to-optimize-online-marketplaces-for-multiple-stakeholders."><a href="https://arxiv.org/pdf/1708.00651.pdf">A Multi-Objective Learning to re-Rank Approach to Optimize Online Marketplaces for Multiple Stakeholders.</a></h3>
+<p>First, let’s look at an example from Expedia. Being a service provider they are trying to optimize for the following objectives:</p>
+<ol type="1">
+<li>Consumer’s Conversion Rate or Click Through Rate.</li>
+<li>Maximum transaction commission from the supplier.</li>
+</ol>
+<p>A supplier pays a marginal amount of the sales transaction as a commission to the platform. Let’s say the product’s cost is <span class="math inline">\(c\)</span> and the selling price is <span class="math inline">\(p\)</span> then the margin is <span class="math inline">\(m = p-c\)</span>.</p>
+<p>To achieve the above objectives, the optimization function is defined as follows:</p>
+<p><span class="math display">\[\max_{\alpha, \beta}L(m|u) = \sum_{i=1}^n \log(u_i) + \alpha \log(p_i) + \beta \log(\frac{m_i}{p_i})\]</span></p>
+<p>where <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are tuning parameters.</p>
+<p><span class="math inline">\(\log(u_i)\)</span> = User possibility to do transaction.</p>
+<p><span class="math inline">\(\log(p_i)\)</span> = supplier interest for selling the product at price <span class="math inline">\(p\)</span>.</p>
+<p><span class="math inline">\(\\og(m/p)\)</span> = profit margin define as percentage here.</p>
+<p>In these objective functions, we have contradictory relations with suppliers and consumers by nature. On the other side, service providers want higher commission benefits from suppliers at an indirect cost to consumers. For such problems, there is no unique Pareto optimal solution because of the complex and opposing interactions of the different stakeholder interests.</p>
+<p>Here they give priority to promoting items to higher positions that better satisfy a transaction commission objective while staying as close as possible to the original ranking. The new ranking score function looks like the below:</p>
+<p><span class="math display">\[ \forall_u \in u, u^{′} = u + \alpha\log(p) + \beta(x,m)\log(\frac{m}{p})\]</span></p>
+<p>To reduce the distance between the new vs old score vectors, they use the <a href="https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient">Kendall tau</a> correlation measure. The updated objective function looks like the below:</p>
+<p><span class="math display">\[\min_{\alpha, \beta}L(m|u, X) = L_r(\frac{m}{X}) + \gamma(1 - K^{'}(u, u^{′})) \]</span></p>
+<p>Here, <span class="math inline">\(K^{'}(u, u^{'})\)</span> is playing the role of a similarity-based regularizer with the original ranking order u being the reference point to the new ranking order <span class="math inline">\(u^{′}\)</span>. The hyperparameter <span class="math inline">\(\gamma\)</span> gives the balance between our objective function.</p>
+<p>To evaluate the LTR method, they use an in-house Expedia dataset built from worldwide hotel searches collected during 2016. The new ranking methods give a lift of +16.7% on the NDCG of margin, but at the same time, this incurs a decrease of -5.9% in terms of the NDCG of customer preferences.</p>
+<p>The paper also uses the following formula to calculate the risk and reward to further evaluate the new objective function:</p>
+<p><span class="math display">\[ Risk = \frac{1}{|q|} \sum_q NDCG@10(LRR) &lt; NDCG@10(Baseline)\]</span> <span class="math display">\[ Reward = \frac{1}{|q|} \sum_q NDCG@10(LRR) &gt; NDCG@10(Baseline)\]</span></p>
+<p>They have found that the risk is lower than the baseline and the reward much higher.</p>
+<p>This experiment shows that multi-objective is always a trade-off between the two objectives: Conversion rate vs Margin. They would like to further test with real-world performance via <span class="math inline">\(A/B\)</span> testing.</p>
+</section>
+<section id="joint-optimization-of-profit-and-relevance-for-recommendation-systems-in-e-commerce" class="level3">
+<h3 class="anchored" data-anchor-id="joint-optimization-of-profit-and-relevance-for-recommendation-systems-in-e-commerce"><a href="http://ceur-ws.org/Vol-2440/short1.pdf">Joint Optimization of Profit and Relevance for Recommendation Systems in E-commerce</a></h3>
+<p>Traditionally, e-commerce-based recommendation systems focus on optimizing for relevance by predicting the purchase or click probability of an item. The relevance-centric approach is capable to increased the conversion rate but does not guarantee a maximum profit for either a platform or seller. In this paper from Etsy, where they discussed a novel revenue model, which optimises for two objectives:</p>
+<ol type="1">
+<li>Maximising the Revenue</li>
+<li>The probability of the purchase.</li>
+</ol>
+<p>To maximise the likelihood, the objective function is defined as follows:</p>
+<p><span class="math display">\[\max_{w \in R^n, b \in R} l(w,b) := - \sum_{i=1}^{m} \log(1 + exp(-y_i(w^T x_i + b)))\]</span></p>
+<p>Here, <span class="math inline">\(x_i\)</span> = <span class="math inline">\(i^{th}\)</span> training sample <span class="math inline">\(x_i \in R^n\)</span> <span class="math inline">\(y_i\)</span> = label whether a recommended item is purchased or not</p>
+<p>Let’s say <span class="math inline">\(\pi_i\)</span> is the price of item, then the objective function for maximizing profit is as below:</p>
+<p><span class="math display">\[ρ(w,b) := \sum_{i=1}^{m} E[\pi_i, y_i] = \sum_{i=1}^{m} \pi_i (2prob[y_i = 1|x_i;w] - 1)\]</span> <span class="math display">\[= \sum_{i=1}^{m} 2\pi_i\sigma(w^T x_i + b) - \pi_i,\]</span></p>
+<p>The combined objective function will be:</p>
+<p><span class="math display">\[\max_{w\in R^n, b\in R } l(w,b) + \mu ρ(w,b)\]</span></p>
+<p>To optimise the above objective, <span class="math inline">\(w\)</span>, $<span class="math inline">\(b\)</span> parameters need to be found which can fit <span class="math inline">\(l(w,b)\)</span> to maximise the likelihood while maximizing the expected revenue (via <span class="math inline">\(ρ(w, b)\)</span>). Here, <span class="math inline">\(\mu ≥ 0\)</span> is a hyperparameter of the model that controls the tradeoff between the two objectives. Once the optimal parameters are learned, they use them to rank a set of candidate items.</p>
+<p>They have used the following metrics to evaluate the performance of the proposed model</p>
+<ol type="1">
+<li>Profit@K: profit generate by kth highest ranked item</li>
+<li>Average price: Average price of the k highest ranked item</li>
+<li>AUC: to measure relevance</li>
+<li>NDCG@5</li>
+</ol>
+<p>Etsy has done an offline evaluation of the proposed model. They found the proposed revenue model attains the highest AUC and profit@k for all K values. Note they used K value up to 3. They observe that the revenue model has a 3.57% increase in AUC and 9.50% in profit@1 compared to the baseline model. Also increases P-NDCG@k and AP@k for all k by at least 3.57% and 23.08% However, the proposed model results in a 10.76% and 16.06% decrease in AUC compared to the baseline.</p>
+<p>The overall revenue model can increase profit for the platform while retaining high relevancy for users. They would like to assess revenue model performance in the face of real user traffic via an online A/B experiment.</p>
+</section>
+<section id="using-bayesian-optimization-for-balancing-metrics-in-recommendation-systems" class="level3">
+<h3 class="anchored" data-anchor-id="using-bayesian-optimization-for-balancing-metrics-in-recommendation-systems"><a href="https://engineering.linkedin.com/blog/2022/using-bayesian-optimization-for-balancing-metrics-in-recommendat">Using Bayesian optimization for balancing metrics in recommendation systems</a></h3>
+<p>This is a blog plot from LinkedIn. Here, they are building a LinkedIn notifications recommendation system, which notifies members about various activities within their network. To build an efficient notification system, they are optimizing for the following objects:</p>
+<ol type="1">
+<li>CTR</li>
+<li>Number of sessions (In a general word, let the user visit/open app)</li>
+</ol>
+<p>The CTR and session objectives can be conflicting, because sending more notifications to members may increase the overall number of sessions, but can decrease CTR because of the quality of the notification.</p>
+<p>The overall objective function looks as below:</p>
+<p><span class="math display">\[P_click + \alpha * \delta P_visit &gt; \gamma\]</span></p>
+<p>where,</p>
+<ol type="1">
+<li><span class="math inline">\(p_click\)</span> is the probability of click by member</li>
+<li>ΔpVisit can be define as (p(Visit | send ) - p(Visit | not send)). It’s the difference between sending a notification now vs not sending a notification.</li>
+<li>a is the hyperparameter that measures the relative importance of the two utilities.</li>
+<li>𝛾 is the threshold applied.</li>
+</ol>
+<p>Finding an optimal value of x={a,𝛾} can maximize the sessions without compromising on CTR and send volume. To ensure the overall performance, they used c1 and c2 constants as contained for CTR(x), and Send Volume(x).</p>
+<p>The updated objective function looks like the below:</p>
+<p><span class="math display">\[ \max_{\forall x_i} , f_(session)(x)\]</span> Such that, <span class="math display">\[f_{CTR}(x) &gt; c_1, f_{sent-volume} (x) &lt; c_2\]</span></p>
+<p>Using the above contained, they define a single objective function as below:</p>
+<p><span class="math display">\[\max_x U(x) = f_{session}(x) + \lambda(1 \{f_{CTR}(x) &gt; c_1 \} + 1\{f_{sent-volume(x)} &lt; c_2\}),\]</span></p>
+<p>By converting a MOO into SOO using constrained-based optimization, they learnt global hyperparameters (i.e., a single value) for all members. Based on online A/B experiments, they found that learning separate hyperparameters for cohorts of members gives better results than converting a MOO into SOO.</p>
+</section>
 </section>
 </section>
 <section id="conclusion" class="level1">
@@ -835,7 +902,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
