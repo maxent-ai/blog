@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.0.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,15 +11,10 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
-  vertical-align: middle;
-}
 </style>
 
 
@@ -122,11 +117,9 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-sm navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+      <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">जिज्ञासा</span>
-    </a>
-  </div>
+  </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -188,12 +181,12 @@ gtag('config', 'G-R1P14Q05G4', { 'anonymize_ip': true});
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="ltr,recsys,optimisation,applied-ml,marketplace,economics,notes" data-listing-date-sort="1666204200000" data-listing-file-modified-sort="1665720214674" data-listing-reading-time-sort="38.53">
+<div class="quarto-post image-right" data-index="0" data-categories="ltr,recsys,optimisation,applied-ml,marketplace,economics,notes" data-listing-date-sort="1666204200000" data-listing-file-modified-sort="1665723202229" data-listing-reading-time-sort="38.685">
 <div class="thumbnail">
-<p><a href="./posts/post-1/marketplace-recsys-part-1.pdf"> <img src="./posts/post-1/assets/intro.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/post-1/marketplace-recsys-part-1.html"> <img src="./posts/post-1/assets/intro.png" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
-<a href="./posts/post-1/marketplace-recsys-part-1.pdf">
+<a href="./posts/post-1/marketplace-recsys-part-1.html">
 <h3 class="no-anchor listing-title">
 The Path towards Marketplace recommendations: Part-I
 </h3>
@@ -224,14 +217,14 @@ economics
 notes
 </div>
 </div>
-<a href="./posts/post-1/marketplace-recsys-part-1.pdf">
+<a href="./posts/post-1/marketplace-recsys-part-1.html">
 <div class="listing-description">
-
+<img src="assets/intro.png" class="img-fluid">
 </div>
 </a>
 </div>
 <div class="metadata">
-<a href="./posts/post-1/marketplace-recsys-part-1.pdf">
+<a href="./posts/post-1/marketplace-recsys-part-1.html">
 <div class="listing-date">
 Oct 20, 2022
 </div>
@@ -315,8 +308,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      let href = ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

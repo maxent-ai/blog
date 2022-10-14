@@ -493,7 +493,13 @@ Here, we rank the function based on $f_i$, and where a tie occurs we break the t
 
 ## Few Examples in the Wild
 
-### [A Multi-Objective Learning to re-Rank Approach to Optimize Online Marketplaces for Multiple Stakeholders.](https://arxiv.org/pdf/1708.00651.pdf)
+### A Multi-Objective Learning to Re-Rank Approach to Optimize Online Marketplaces for Multiple Stakeholders.
+
+:::{.callout-tip appearance="minimal"}
+
+Read the Original Paper over here: [Original Paper](https://arxiv.org/pdf/1708.00651.pdf)
+
+::: 
 
 First, let’s look at an example from Expedia. Being a service provider they are trying to optimize for the following objectives: 
 
@@ -512,7 +518,7 @@ $\log(u_i)$ = User possibility to do transaction.
 
 $\log(p_i)$ = supplier interest for selling the product at price $p$.
 
-$\\og(m/p)$ = profit margin define as percentage here.
+$\log(m/p)$ = profit margin define as percentage here.
 
 In these objective functions, we have contradictory relations with suppliers and consumers by nature. On the other side, service providers want higher commission benefits from suppliers at an indirect cost to consumers. For such problems, there is no unique Pareto optimal solution because of the complex and opposing interactions of the different stakeholder interests.
 
@@ -537,7 +543,13 @@ They have found that the risk is lower than the baseline and the reward much hig
 
 This experiment shows that multi-objective is always a trade-off between the two objectives: Conversion rate vs Margin. They would like to further test with real-world performance via $A/B$ testing.
 
-### [Joint Optimization of Profit and Relevance for Recommendation Systems in E-commerce](http://ceur-ws.org/Vol-2440/short1.pdf)
+### Joint Optimization of Profit and Relevance for Recommendation Systems in E-commerce
+
+:::{.callout-tip appearance="minimal"}
+
+Read the Original Paper over here: [Original Paper](http://ceur-ws.org/Vol-2440/short1.pdf)
+
+::: 
 
 Traditionally, e-commerce-based recommendation systems focus on optimizing for relevance by predicting the purchase or click probability of an item. The relevance-centric approach is capable to increased the conversion rate but does not guarantee a maximum profit for either a platform or seller. In this paper from Etsy, where they discussed a novel revenue model, which optimises for two objectives: 
 
@@ -573,38 +585,44 @@ Etsy has done an offline evaluation of the proposed model. They found the propos
 
 The overall revenue model can increase profit for the platform while retaining high relevancy for users. They would like to assess revenue model performance in the face of real user traffic via an online A/B experiment.
 
-### [Using Bayesian optimization for balancing metrics in recommendation systems](https://engineering.linkedin.com/blog/2022/using-bayesian-optimization-for-balancing-metrics-in-recommendat)
+### Using Bayesian optimization for balancing metrics in recommendation systems
 
-This is a blog plot from LinkedIn. Here, they are building a LinkedIn notifications recommendation system, which notifies members about various activities within their network. To build an efficient notification system, they are optimizing for the following objects:
+:::{.callout-tip appearance="minimal"}
+
+Read the Original article over here: [Original Article](https://engineering.linkedin.com/blog/2022/using-bayesian-optimization-for-balancing-metrics-in-recommendat)
+
+::: 
+
+Let's now look into an article from Linkedin where they describe their approach towards building their notifications recommendation system, which notifies members about various activities within their network. To build an efficient notification system, they are optimizing for the following objects:
 
 1. CTR
-2. Number of sessions (In a general word, let the user visit/open app)
+2. Number of sessions (i.e the user visits & app open rate)
 
 The CTR and session objectives can be conflicting, because sending more notifications to members may increase the overall number of sessions, but can decrease CTR because of the quality of the notification.
 
-The overall objective function looks as below:
+The overall objective function they define is as follows:
 
-$$P_click + \alpha * \delta P_visit > \gamma$$
+$$P_{click} + \alpha * \delta P_{visit} > \gamma$$
 
 where,
 
-1. $p_click$ is the probability of click by member
-2. ΔpVisit can be define as (p(Visit | send ) - p(Visit | not send)). It's the difference between sending a notification now vs not sending a notification.
-3. a is the hyperparameter that measures the relative importance of the two utilities.
-4. 𝛾 is the threshold applied.
+1. $p_{click}$ is the probability of click by member
+2. $\delta P_{visit}$ can be defined as $p(\frac{visit}{sent})$ - $p(\frac{visit}{not sent})$. Which is basically the difference between sending a notification now vs not sending a notification.
+3. $a$ is the hyperparameter that measures the relative importance of the two utilities.
+4. $𝛾$ is the threshold applied.
 
-Finding an optimal value of x={a,𝛾} can maximize the sessions without compromising on CTR and send volume. To ensure the overall performance, they used c1 and c2 constants as contained for CTR(x), and Send Volume(x).
+Finding an optimal value of $x={a,𝛾}$ can maximize the sessions without compromising on CTR and send volume. To ensure the overall performance, they used $c1$ and $c2$ constraints as contained for CTR(x), and Send Volume(x).
 
 The updated objective function looks like the below:
 
-$$ \max_{\forall x_i} , f_(session)(x)$$
+$$ \max_{\forall x_i} , f_{session}(x)$$
 Such that, $$f_{CTR}(x) > c_1, f_{sent-volume} (x) < c_2$$
 
-Using the above contained, they define a single objective function as below:
+Using the above constraints, they define a single objective function as below:
 
 $$\max_x U(x) = f_{session}(x) + \lambda(1 \{f_{CTR}(x) > c_1 \} + 1\{f_{sent-volume(x)} < c_2\}),$$
 
-By converting a MOO into SOO using constrained-based optimization, they learnt global hyperparameters (i.e., a single value) for all members. 
+By converting a MOO into SOO using constraint-based optimization, they learn global hyperparameters (i.e., a single value) for all members. 
 Based on online A/B experiments, they found that learning separate hyperparameters for cohorts of members gives better results than converting a MOO into SOO.
 
 
