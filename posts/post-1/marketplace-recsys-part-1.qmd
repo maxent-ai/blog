@@ -18,17 +18,15 @@ comments: false
 
 # The Backdrop
 
-It took humans less than a decade to reach a level of sophistication to reach a stage where with less than a couple of keystrokes on a phone one could get the most elaborate meal delivered at home. That’s the magic of the internet revolution. In recent times this trend has only gotten sharper and sharper, with the on-demand delivery space heating up, an Indian consumer can receive anything from an egg to the most lavish dinner faster than it takes to respond to a slack message, in fact as of 2022 - you can get most things delivered under 10 minutes! 
+It took humans less than a decade to reach a level of sophistication to reach a stage where with less than a couple of keystrokes on a phone one could get the most elaborate meal delivered at home. That’s the magic of the internet revolution. In recent times this trend has only gotten sharper and sharper, with the on-demand delivery space heating up, an Indian consumer can receive anything from an egg to the most lavish dinner faster than it takes to respond to a slack message. 
 
-The implication of this is that the customers do not need to plan anything much in advance and that the time between desire, action, and gratification has shrunk to almost zero. One such Hypothetical unicorn startup in this space is Hyper - Which started just over two years ago and has seen massive growth in a short period. 
+In fact,  as of 2022 you can get most things delivered under 10 minutes!
+The implication of this is that the customers do not need to plan anything much in advance and that the time between desire, action, and gratification has shrunk to almost zero. One such Hypothetical unicorn startup in this space is Hyper - Which started over two years ago and has seen massive growth in a short period.
+Hyper is known mainly for its super fast, sub-10-minute delivery of almost anything that one can think. However, In the past couple of weeks, the sentiment trends around sub-10-minute style deliveries has been sharply negative due to various factors. Especially concerned around the lack of empathy towards Hyper’s delivery partners. What was once a strength seems to be turning into pain for the company. Many are asking if we have gone too far.
 
-Hyper is known mainly for its super fast, sub-10-minute delivery of almost anything that one can think of! However, In the past couple of weeks, the sentiment trends around sub-10-minute style deliveries seem to be sharply negative due to various factors especially concerned around the lack of empathy towards Hyper's delivery partners. What was once a strength seems to be turning into pain for the company and many are asking if we have gone too far.
-
-Within this Hypothetical backdrop where Hyper is reevaluating its business strategy, Hyper's engineering team set's forth on a journey to contribute towards its initiative of bringing a bit more balance within the marketplace. This marketplace is not overly user-centric but also is fair for other stakeholders like a delivery partners as well. 
-
-Enter recommendation systems, systems that sit at the heart of how most digital marketplaces perform. Most of the digital economies are shaped by these systems - the scale, convenience, and speed of marketplaces like Hyper are enabled by recommendation systems and search engines. Hence, what these systems optimize for and how they behave are of critical importance. Within a marketplace, there are a lot of factors that come into play, and the success of any given marketplace is closely tied to how you match, cater & satisfy the requirements of all the stakeholders like the consumers, suppliers, and more. 
-
-In a series of articles, let's dive deeper into how these systems are designed, and optimized and explore their inner workings and also learn how these systems (or parts of them, to be precise) can be built in practice. 
+Within this Hypothetical backdrop where Hyper is reevaluating its business strategy, Hyper’s engineering team set’s forth on a journey to contribute towards its initiative of bringing a bit more balance within the marketplace. This marketplace is not overly user-centric but is also fair for other stakeholders like delivery partners.
+Enter recommendation systems, systems that sit at the heart of how most digital marketplaces perform. Most digital economies are shaped by these systems. The scale, convenience, and speed of marketplaces like Hyper are enabled by recommendation systems and search engines. Hence, what these systems optimize for and how they behave are of critical importance. Within a marketplace, multiple factors come into play, and the success of any given marketplace is closely tied to how you match, cater & satisfy the requirements of all the stakeholders like the consumers, suppliers, and more.
+In a series of articles, let’s dive deeper into how these systems are designed, optimized and explore the inner workings and learn how some parts of these systems are built in practice.
 
 But first, let's establish a couple of definitions, terms & concepts.
 
@@ -92,25 +90,25 @@ Read more about this in [Towards a Fair Marketplace: Counterfactual Evaluation o
 
 :::
 
-In short, what a system optimises for is super important & in general, it needs to look for a balance while optimising for various objectives. 
+In short, what a system optimizes for is super important & in general, it needs to look for a balance while optimizing for various objectives. 
 
-Before we proceed further on the track of optimising for multiple objectives (or multiple objective optimisation) - let us quickly visit how most modern recommendation systems look like & also do a quick recap of how one builds a model for ranking (aka Learning to rank) & some key metrics used for measuring these systems.
+Before we proceed further on how to optimize for multiple objectives  let us quickly revisit and see how most modern recommendation systems are built. Also, let's do a quick recap of how one builds a ranking model (aka Learning to rank) & some important metrics used for measuring these systems.
 
 # A Quick Recap on modern recsys
 
 ![](assets/recsys-wn.png)
 
-Over the past few years, a common and a central design pattern has emerged around how most industrial recommendation systems are designed. If one were to summarise this design pattern, it would appear as described in the above figure - consisting of 4 stages. Let us take a brief look at the functionality of these four stages: 
+Over the past few years, a common and central design pattern has emerged around how most industrial recommendation systems are designed. If one were to summarise this design pattern, it would appear as described in the above figure - consisting of 4 stages. Let us take a brief look at the functionality of these four stages: 
 
 ## Candidate retrieval 
 
-The Retrieval & filtering stages usually are collectively refered to as candidate generation, this is a fast but coarse step which essentially narrows down the search space of items from millions of candidates for a given query to soemthing in order of 100s. 
+The Retrieval & filtering stages usually are collectively referred to as candidate generation. A fast but coarse step which narrows down the search space of items from millions of candidates for a given query to something in the order of 100s. 
 
-This is often achieved by an initial retrieval with some form of matching between the query and the catalog usually via an ANN, Graph based approach or some form of decision trees. Followed by a filtering stage, where invalid candidates are removed from the initial retrieval before passing onto the next stages. 
+Often this is achieved by an initial retrieval with some form of matching between the query and the catalog.Usually, via an ANN, Graph-based approach, or some form of a decision tree. Followed by a filtering stage, where invalid candidates are removed from the initial retrieval before passing on to the next stages. 
 
 ## Ranking
 
-At this phase we further narrow down the initial set of items into a much smaller list that would be presented to the user. This is a slow but more precise operation - this stage is usually modelled as an LTR task or a classification task. Further, sometimes it's followed by an ordering stage which handles various types of business logic  to reorder/sort the final list of items. Some common examples of these business logic include: organising recommendations to fit genre distributions in streaming services or promoting certain segments of sellers as in case of ecommerce.  
+At this phase, we further narrow the initial set of items into a much smaller list to be presented to the user. Which is a slow but more precise operation - this stage is usually modeled as an LTR or a classification task. Further, sometimes it's followed by an ordering stage which handles various business logic to reorder/sort the final list of items. Some common examples of this business logic include: organizing recommendations to fit genre distributions in streaming services or promoting specific segments of sellers as in the case of e-commerce.  
 
 :::{.callout-tip appearance="minimal"}
 
@@ -122,7 +120,7 @@ Most Production recommendation systems are indeed complex in nature, but the abo
 
 # A Quick Recap on Learning to Rank 
 
-Learning to rank (LTR) refers to a class of ML techniques for training a model to solve the task of ranking a set of items. Usually this is formulated as a supervised or sometimes semi-supervised task.
+Learning to rank (LTR) refers to a class of ML techniques for training a model to solve the task of ranking a set of items. Usually, this is formulated as a supervised or sometimes semi-supervised task.
 
 Generally, this means we try to learn a function $f(q, D)$ given a query $q$ & a list of documents $D$ to predict the order/rank of the documents within this list. Depending on how the loss function is formulated in the underlying task, any LTR algorithm can be classified into 3 distinct categories: 
 
@@ -226,7 +224,7 @@ With that brief introduction out of the way, let's also quickly look at the adva
 
 # A Quick Recap on Ranking Evaluation metrics
 
-Over the years, there have been several metrics which have been proposed and widely used for evaluating a ranking model. If we were to summarise them and list the most popular ones it boils down to this: 
+Over the years, Several metrics have been proposed and widely used for evaluating a ranking model. If we were to summarise them and list the most popular metrics it boils down to this: 
 
 +-------------------+---------------------------------------------+
 | Metric Type       | Metric                                      |
@@ -240,7 +238,8 @@ Over the years, there have been several metrics which have been proposed and wid
 | Graded Relevance  | Expected Reciprocal Rank (ERR)              |
 +-------------------+---------------------------------------------+
 
-In general, binary metrics only consider relevant v.s. irrelevant, while graded metrics  also consider the ranking among relevant items. The degree of relevancy matters in this case when scoring a list of items.
+In general, binary metrics only consider relevant & irrelevant items, while graded metrics consider the ranking among relevant items. The degree of relevancy matters in this case when scoring a list of items.
+
 
 ## Mean Average Precision (MAP)
 
@@ -293,7 +292,7 @@ Normalized Discounted Cumulative Gain (NDCG) is one of the most popular metric f
 
 1. Cumulative Gain: Very relevant items are more useful than somewhat relevant items which are more useful than completely irrelevant items.
 2. Discounting: Relevant items are more useful when they appear earlier in a list of ranked items.
-3. Normalization: The result of the ranking should be irrelevant to the query performed. 
+3. Normalization: The ranking results should be irrelevant to the query performed.  
 
 Let's define Discounted Cumulative Gain at position $k$ as follows:
 
@@ -316,11 +315,12 @@ Here is a simple example for computing NDCG:
 
 ## MOO - The What, The Why & The How.
 
-After that long detour, let's now look into Multiple Objective Optimisation applied to Ranking problem within a marketplace type setting involving multiple stakeholders. Let's do so with a simple illustrative example that involves similar item recommendations. Specifically, let's understand Why this is needed first.
+After that long detour, let's now look into Multiple Objective Optimisation applied to Ranking problem within a marketplace setting involving multiple stakeholders. Let's do so with a simple illustrative example that involves similar item recommendations. Specifically, let's understand Why this is needed first.
 
-Picture this, A User has browsed and explored a bunch of different red shirts that he's planning to buy, and on one such open tab we've got a shirt that he's closely examining. Now, the recommendation system in the backend is also generating a bunch of similar shirts that he might be interested in, further let's say the recommendation system is optimising for two different objectives - firstly, to show not just relevant but also personalised shirts similar to his style, based on his interaction history that he might explore further & perhaps buy. Secondly, the platform also wants to make sure it's making a good profit on each sales that the recommendation system generates/leads to - hence wants to also promote shirts with a good margin. How would we do this? 
+Picture this, A User has browsed and explored a bunch of different red shirts they are planning to buy, and on one such open tab we've got a shirt that they are closely examining. Now, the recommendation system in the backend is also generating a bunch of similar shirts that they might be interested to explore. 
+Let's say the recommendation system is optimising for two different objectives - firstly, to show relevant and personalised shirts similar to their style based on interaction history. Secondly, the platform also wants to make sure it's making a good profit on each sales that the recommendation system generates or leads to. Hence, they would also want to promote shirts with good porfit margin. How would we do this? 
 
-Let's start by defining our objectives: 
+Let's start by defining our objectives:
 
 +-----------------+----------------+
 | Objective I     | Objective II   |
@@ -364,9 +364,9 @@ What do we have as of now:
 | 2       | Profit Margin               | Personalisation            | $T4$              |
 +---------+-----------------------------+----------------------------+-------------------+
 
-So, that seems odd. there's multiple solutions depending on what we actually want to achieve. If, we want to optimise for both and find the best solution, Going about in the above method seems to be not the best way. This is why, we need to optimise for finding solutions for both objectives collectively and the method or set of optimisation methods for it is called _Multiple Objective Optimization_. 
+So, that seems odd. There are multiple solutions. Depending on what we want to achieve- If we want to optimize for both objectives and find the best solution, Going about in the above method is not the best way. Instead, we need to optimize to find solutions for both objectives collectively. The set of optimization methods that enables this is called _Multiple Objective Optimization_. 
 
-Let's define what MOO is & try to understand some other associated important concepts first, before we see how these are applied to ranking task in industry.
+Let's define what MOO is & try to understand some other key concepts associated with it.
 
 :::{.callout-caution collapse="true" appearance="minimal"}
 ## Basic Concepts - Defining the MOO Problem, Pareto Optimum & Pareto Frontier 
@@ -399,7 +399,7 @@ read more on this from [A Survey on Modeling and Optimizing Multi-Objective Syst
 :::
 
 ## Popular methods applied to LTR Setting.
-Over the years, there have been numerous approaches that have been used in LTR setting. Broadly most of these approaches, can be classified into four categories as follows:
+Over the years, numerous approaches have been applied in LTR settings. Broadly most of these approaches can be classified into four categories as follows:
 
 1. Label Aggregation
 2. Constraint Optimization
@@ -551,12 +551,12 @@ Read the Original Paper over here: [Original Paper](http://ceur-ws.org/Vol-2440/
 
 ::: 
 
-Traditionally, e-commerce-based recommendation systems focus on optimizing for relevance by predicting the purchase or click probability of an item. The relevance-centric approach is capable to increased the conversion rate but does not guarantee a maximum profit for either a platform or seller. In this paper from Etsy, where they discussed a novel revenue model, which optimises for two objectives: 
+Traditionally, e-commerce-based recommendation systems focus on optimizing for relevance by predicting the purchase or click probability of an item. The relevance-centric approach is capable to increased the conversion rate but does not guarantee a maximum profit for either a platform or seller. In this paper from Etsy, where they discussed a novel revenue model, which optimizes for two objectives: 
 
 1. Maximising the Revenue
 2. The probability of the purchase. 
 
-To maximise the likelihood, the objective function is defined as follows:
+To maximize the likelihood, the objective function is defined as follows:
 
 $$\max_{w \in R^n, b \in R} l(w,b) := - \sum_{i=1}^{m} \log(1 + exp(-y_i(w^T x_i + b)))$$
 
@@ -624,12 +624,9 @@ $$\max_x f(x) = f_{session}(x) + \lambda(1 \{f_{CTR}(x) > c_1 \} + 1\{f_{sentVol
 
 By converting a MOO into SOO using constrained-based optimization, they learn global hyperparameters (i.e., a single value) for all members. Further, they evaluate and improve upon this via online A/B experiments.
 
+# Conclusion 
 
 
-
-
-
-# Conclusion 🚧
 
 # Reference
 
