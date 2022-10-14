@@ -626,7 +626,11 @@ By converting a MOO into SOO using constrained-based optimization, they learn gl
 
 # Conclusion 
 
+In this rather long post, we looked into common design patterns for building modern recommendation systems, Common styles of training ranking models & Popular metrics for evaluating these systems and also looked at the task of multiple objective optimizations and their application within Learning to rank. We also looked at a few examples of multi-objective ranking from the industry - and one common trend that we observed is that simple techniques like label aggregation, model aggregation, or constrained optimization work surprisingly well in practice. 
 
+With that said, In the upcoming blogs, we'll do a deep dive into each of these approaches and look at how one could implement these in practice with an open-source [dataset](https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/). 
+
+# Acknowledgement
 
 # Reference
 
