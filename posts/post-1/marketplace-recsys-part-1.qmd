@@ -572,7 +572,7 @@ The combined objective function will be:
 
 $$\max_{w\in R^n, b\in R } l(w,b) + \mu ρ(w,b)$$
 
-To optimise the above objective, $w$, $$b$ parameters need to be found which can fit $l(w,b)$ to maximise the likelihood while maximizing the expected revenue (via $ρ(w, b)$). Here, $\mu ≥ 0$ is a hyperparameter of the model that controls the tradeoff between the two objectives. Once the optimal parameters are learned, they use them to rank a set of candidate items.
+To optimise the above objective, $(w,b)$ parameters need to be found which can fit $l(w,b)$ to maximise the likelihood while maximizing the expected revenue (via $ρ(w, b)$). Here, $\mu ≥ 0$ is a hyperparameter of the model that controls the tradeoff between the two objectives. Once the optimal parameters are learned, they use them to rank a set of candidate items.
 
 They have used the following metrics to evaluate the performance of the proposed model
 
@@ -598,35 +598,31 @@ Let's now look into an article from Linkedin where they describe their approach 
 1. CTR
 2. Number of sessions (i.e the user visits & app open rate)
 
-The CTR and session objectives can be conflicting, because sending more notifications to members may increase the overall number of sessions, but can decrease CTR because of the quality of the notification.
+The CTR and session objectives can be conflicting, because sending more notifications to members may lead them to visit an app frequently. And It increases the overall number of sessions but on the other side, it can decrease CTR because of the quality of the notification.
 
 The overall objective function they define is as follows:
 
-$$P_{click} + \alpha * \delta P_{visit} > \gamma$$
+$$p_{click} + \alpha * \Delta p_{visit} > \gamma$$
 
 where,
 
 1. $p_{click}$ is the probability of click by member
-2. $\delta P_{visit}$ can be defined as $p(\frac{visit}{sent})$ - $p(\frac{visit}{not sent})$. Which is basically the difference between sending a notification now vs not sending a notification.
-3. $a$ is the hyperparameter that measures the relative importance of the two utilities.
-4. $𝛾$ is the threshold applied.
+2. $\Delta p_{visit}$ can be defined as $p(\frac{visit}{sent})$ - $p(\frac{visit}{not sent})$. Which is basically the difference between sending a notification now vs not sending a notification.
+3. $\alpha$ is the hyperparameter that measures the relative importance of the two utilities.
+4. $\gamma$ is the threshold applied.
 
-Finding an optimal value of $x={a,𝛾}$ can maximize the sessions without compromising on CTR and send volume. To ensure the overall performance, they used $c1$ and $c2$ constraints as contained for CTR(x), and Send Volume(x).
+Finding an optimal value of $x=\{\alpha,\gamma\}$ can maximize the sessions without compromising on CTR and send volume. To ensure the overall performance, they used $c1$ and $c2$ constraints as contained for CTR(x), and Send Volume(x).
 
 The updated objective function looks like the below:
 
 $$ \max_{\forall x_i} , f_{session}(x)$$
-Such that, $$f_{CTR}(x) > c_1, f_{sent-volume} (x) < c_2$$
+Such that, $$f_{CTR}(x) > c_1, f_{sentVolume} (x) < c_2$$
 
 Using the above constraints, they define a single objective function as below:
 
-$$\max_x U(x) = f_{session}(x) + \lambda(1 \{f_{CTR}(x) > c_1 \} + 1\{f_{sent-volume(x)} < c_2\}),$$
+$$\max_x f(x) = f_{session}(x) + \lambda(1 \{f_{CTR}(x) > c_1 \} + 1\{f_{sentVolume(x)} < c_2\}),$$
 
-By converting a MOO into SOO using constraint-based optimization, they learn global hyperparameters (i.e., a single value) for all members. 
-Based on online A/B experiments, they found that learning separate hyperparameters for cohorts of members gives better results than converting a MOO into SOO.
-
-
-
+By converting a MOO into SOO using constrained-based optimization, they learn global hyperparameters (i.e., a single value) for all members. Further, they evaluate and improve upon this via online A/B experiments.
 
 
 
