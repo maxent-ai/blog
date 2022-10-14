@@ -774,7 +774,7 @@ Basic Concepts - Defining the MOO Problem, Pareto Optimum &amp; Pareto Frontier
 <p><span class="math display">\[= \sum_{i=1}^{m} 2\pi_i\sigma(w^T x_i + b) - \pi_i,\]</span></p>
 <p>The combined objective function will be:</p>
 <p><span class="math display">\[\max_{w\in R^n, b\in R } l(w,b) + \mu ρ(w,b)\]</span></p>
-<p>To optimise the above objective, <span class="math inline">\(w\)</span>, $<span class="math inline">\(b\)</span> parameters need to be found which can fit <span class="math inline">\(l(w,b)\)</span> to maximise the likelihood while maximizing the expected revenue (via <span class="math inline">\(ρ(w, b)\)</span>). Here, <span class="math inline">\(\mu ≥ 0\)</span> is a hyperparameter of the model that controls the tradeoff between the two objectives. Once the optimal parameters are learned, they use them to rank a set of candidate items.</p>
+<p>To optimise the above objective, <span class="math inline">\((w,b)\)</span> parameters need to be found which can fit <span class="math inline">\(l(w,b)\)</span> to maximise the likelihood while maximizing the expected revenue (via <span class="math inline">\(ρ(w, b)\)</span>). Here, <span class="math inline">\(\mu ≥ 0\)</span> is a hyperparameter of the model that controls the tradeoff between the two objectives. Once the optimal parameters are learned, they use them to rank a set of candidate items.</p>
 <p>They have used the following metrics to evaluate the performance of the proposed model</p>
 <ol type="1">
 <li>Profit@K: profit generate by kth highest ranked item</li>
@@ -802,23 +802,23 @@ Basic Concepts - Defining the MOO Problem, Pareto Optimum &amp; Pareto Frontier
 <li>CTR</li>
 <li>Number of sessions (i.e the user visits &amp; app open rate)</li>
 </ol>
-<p>The CTR and session objectives can be conflicting, because sending more notifications to members may increase the overall number of sessions, but can decrease CTR because of the quality of the notification.</p>
+<p>The CTR and session objectives can be conflicting, because sending more notifications to members may lead them to visit an app frequently. And It increases the overall number of sessions but on the other side, it can decrease CTR because of the quality of the notification.</p>
 <p>The overall objective function they define is as follows:</p>
-<p><span class="math display">\[P_{click} + \alpha * \delta P_{visit} &gt; \gamma\]</span></p>
+<p><span class="math display">\[p_{click} + \alpha * \Delta p_{visit} &gt; \gamma\]</span></p>
 <p>where,</p>
 <ol type="1">
 <li><span class="math inline">\(p_{click}\)</span> is the probability of click by member</li>
-<li><span class="math inline">\(\delta P_{visit}\)</span> can be defined as <span class="math inline">\(p(\frac{visit}{sent})\)</span> - <span class="math inline">\(p(\frac{visit}{not sent})\)</span>. Which is basically the difference between sending a notification now vs not sending a notification.</li>
-<li><span class="math inline">\(a\)</span> is the hyperparameter that measures the relative importance of the two utilities.</li>
-<li><span class="math inline">\(𝛾\)</span> is the threshold applied.</li>
+<li><span class="math inline">\(\Delta p_{visit}\)</span> can be defined as <span class="math inline">\(p(\frac{visit}{sent})\)</span> - <span class="math inline">\(p(\frac{visit}{not sent})\)</span>. Which is basically the difference between sending a notification now vs not sending a notification.</li>
+<li><span class="math inline">\(\alpha\)</span> is the hyperparameter that measures the relative importance of the two utilities.</li>
+<li><span class="math inline">\(\gamma\)</span> is the threshold applied.</li>
 </ol>
-<p>Finding an optimal value of <span class="math inline">\(x={a,𝛾}\)</span> can maximize the sessions without compromising on CTR and send volume. To ensure the overall performance, they used <span class="math inline">\(c1\)</span> and <span class="math inline">\(c2\)</span> constraints as contained for CTR(x), and Send Volume(x).</p>
+<p>Finding an optimal value of <span class="math inline">\(x=\{\alpha,\gamma\}\)</span> can maximize the sessions without compromising on CTR and send volume. To ensure the overall performance, they used <span class="math inline">\(c1\)</span> and <span class="math inline">\(c2\)</span> constraints as contained for CTR(x), and Send Volume(x).</p>
 <p>The updated objective function looks like the below:</p>
 <p><span class="math display">\[ \max_{\forall x_i} , f_{session}(x)\]</span></p>
-<p>Such that, <span class="math display">\[f_{CTR}(x) &gt; c_1, f_{sent-volume} (x) &lt; c_2\]</span></p>
+<p>Such that, <span class="math display">\[f_{CTR}(x) &gt; c_1, f_{sentVolume} (x) &lt; c_2\]</span></p>
 <p>Using the above constraints, they define a single objective function as below:</p>
-<p><span class="math display">\[\max_x U(x) = f_{session}(x) + \lambda(1 \{f_{CTR}(x) &gt; c_1 \} + 1\{f_{sent-volume(x)} &lt; c_2\}),\]</span></p>
-<p>By converting a MOO into SOO using constraint-based optimization, they learn global hyperparameters (i.e., a single value) for all members. Based on online A/B experiments, they found that learning separate hyperparameters for cohorts of members gives better results than converting a MOO into SOO.</p>
+<p><span class="math display">\[\max_x f(x) = f_{session}(x) + \lambda(1 \{f_{CTR}(x) &gt; c_1 \} + 1\{f_{sentVolume(x)} &lt; c_2\}),\]</span></p>
+<p>By converting a MOO into SOO using constrained-based optimization, they learn global hyperparameters (i.e., a single value) for all members. Further, they evaluate and improve upon this via online A/B experiments.</p>
 </section>
 </section>
 </section>
