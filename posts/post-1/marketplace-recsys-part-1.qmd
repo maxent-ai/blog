@@ -2,7 +2,7 @@
 title: "The Path towards Marketplace recommendations: Part-I"
 subtitle: "The Foundation: A Notes on Recsys, LTR, Ranking Evaluation metrics & Multi Objective Ranking in practice."
 author: "Bharath G.S & Rita Anjana"
-date: "2022-10-20"
+date: "2022-10-14"
 categories: [ltr, recsys, optimisation, applied-ml, marketplace, economics, notes]
 draft: false
 comments: false
@@ -634,7 +634,7 @@ With that said, In the upcoming blogs, we'll do a deep dive into each of these a
 
 For any suggestions/feedback or improvements to this article - or maybe just for a casual chat feel free to reach out to us: [Bharath G.S](https://twitter.com/iambharathgs)  & [Rita Anjana](https://twitter.com/AnjanaRita) & if you found this article useful - Please share it with others and let us know! 
 
-Also, If you prefer to read this as a PDF - download it over here: [article-pdf]()
+Also, If you prefer to read this as a PDF - download it over here: [article-pdf](../../assets/marketplace-recommendations-1.pdf)
 :::
 
 # Acknowledgement
