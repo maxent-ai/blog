@@ -630,7 +630,16 @@ In this rather long post, we looked into common design patterns for building mod
 
 With that said, In the upcoming blogs, we'll do a deep dive into each of these approaches and look at how one could implement these in practice with an open-source [dataset](https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/). 
 
+:::{.callout-tip appearance="minimal"}
+
+For any suggestions/feedback or improvements to this article - or maybe just for a casual chat feel free to reach out to us: [Bharath G.S](https://twitter.com/iambharathgs)  & [Rita Anjana](https://twitter.com/AnjanaRita) & if you found this article useful - Please share it with others and let us know! 
+
+Also, If you prefer to read this as a PDF - download it over here: [article-pdf]()
+:::
+
 # Acknowledgement
+
+Thanks to [Jordan Hochenbaum](https://twitter.com/Jnatanh) for reading drafts of this and providing valuable feedback.
 
 # Reference
 
